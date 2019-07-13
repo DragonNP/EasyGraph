@@ -37,7 +37,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.showValue = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
-            this.name = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -150,27 +149,12 @@
             this.richTextBox3.TabIndex = 16;
             this.richTextBox3.Text = "";
             // 
-            // name
-            // 
-            this.name.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.name.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.name.Font = new System.Drawing.Font("Segoe UI Semilight", 18F);
-            this.name.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.name.Location = new System.Drawing.Point(76, 115);
-            this.name.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.name.Multiline = false;
-            this.name.Name = "name";
-            this.name.Size = new System.Drawing.Size(308, 32);
-            this.name.TabIndex = 17;
-            this.name.Text = "";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(814, 613);
-            this.Controls.Add(this.name);
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.richTextBox3);
@@ -203,7 +187,6 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem showValue;
         private System.Windows.Forms.RichTextBox richTextBox3;
-        private System.Windows.Forms.RichTextBox name;
     }
 }
 

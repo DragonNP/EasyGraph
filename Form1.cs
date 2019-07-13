@@ -145,41 +145,36 @@ namespace EasyGraph
                     else if (maxX < x[i]) maxX = x[i];
                 }
 
-                //chart.Series.Clear();
-                chart.ChartAreas["area"].AxisX.Minimum = minX;
-                chart.ChartAreas["area"].AxisX.Maximum = maxX;
-
-                chart.ChartAreas["area"].AxisY.Minimum = minY;
-                chart.ChartAreas["area"].AxisY.Maximum = maxY;
-
-                chart.Series.Add(name.Text);
-                chart.Series[name.Text].BorderDashStyle = ChartDashStyle.Solid;
-                chart.Series[name.Text].BorderWidth = 5;
-                chart.Series[name.Text].Color = Color.DarkBlue;
-                chart.Series[name.Text].Font = new Font("Segoe UI Semilight", 18, FontStyle.Regular);
-                chart.Series[name.Text].ChartType = SeriesChartType.Line;
-                chart.Update();
+                chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY);
+                chart.AddSeries(nameLine: "Линия 1", borderWidth: 3);
 
                 for (int i = 0; i < (x.Count >= y.Count ? y.Count : x.Count); i++)
                 {
-                    chart.Series[name.Text].Points.AddXY(x[i], y[i]);
+                    chart.Series["line1"].Points.AddXY(x[i], y[i]);
                     chart.Update();
                 }
+                chart.Series["line1"].ToolTip = "X = #VALX, Y = #VALY";
             }));
         }
     }
     public static class Graph
     {
+        private static Font font = new Font("Segoe UI Semilight", 18, FontStyle.Regular);
+
+        #region Method public Initialize
         public static void Initialize(this Chart chart,
                                       string title = "График by DragonNP",
                                       string areasName = "area",
                                       string legendsTitle = "Legends",
                                       string axisXTitle = "X",
                                       string axisYTitle = "Y",
+                                      Color color = default,
                                       AxisArrowStyle axisArrowStyle = AxisArrowStyle.Triangle,
-                                      Font font = null)
+                                      Font font = default)
         {
-            if (font == null) font = new Font("Segoe UI Semilight", 18, FontStyle.Regular);
+            if (font == null) font = Graph.font;
+            if (color.IsEmpty) color = Color.Black;
+            Graph.font = font;
 
             chart.Titles.Add(title).Font = font;
             chart.Legends.Add(title);
@@ -189,12 +184,58 @@ namespace EasyGraph
             chart.ChartAreas[areasName].AxisX.Title = axisXTitle;
             chart.ChartAreas[areasName].AxisX.ArrowStyle = axisArrowStyle;
             chart.ChartAreas[areasName].AxisX.TitleFont = font;
-            chart.ChartAreas[areasName].AxisX.TitleForeColor = Color.Black;
+            chart.ChartAreas[areasName].AxisX.TitleForeColor = color;
+
+            chart.ChartAreas[areasName].AxisX2.Title = axisXTitle;
+            chart.ChartAreas[areasName].AxisX2.ArrowStyle = axisArrowStyle;
+            chart.ChartAreas[areasName].AxisX2.TitleFont = font;
+            chart.ChartAreas[areasName].AxisX2.TitleForeColor = color;
 
             chart.ChartAreas[areasName].AxisY.Title = axisYTitle;
             chart.ChartAreas[areasName].AxisY.ArrowStyle = axisArrowStyle;
             chart.ChartAreas[areasName].AxisY.TitleFont = font;
-            chart.ChartAreas[areasName].AxisY.TitleForeColor = Color.Black;
+            chart.ChartAreas[areasName].AxisY.TitleForeColor = color;
+
+            chart.ChartAreas[areasName].AxisY2.Title = axisYTitle;
+            chart.ChartAreas[areasName].AxisY2.ArrowStyle = axisArrowStyle;
+            chart.ChartAreas[areasName].AxisY2.TitleFont = font;
+            chart.ChartAreas[areasName].AxisY2.TitleForeColor = color;
         }
+        #endregion
+
+        #region Method public AddSeries
+        public static void AddSeries(this Chart chart,
+                                      string nameLine = "Line1",
+                                      ChartDashStyle chartDashStyle = ChartDashStyle.Solid,
+                                      int borderWidth = 5,
+                                      Color color = default,
+                                      Font font = default,
+                                      SeriesChartType chartType = SeriesChartType.Line)
+        {
+            if (font == null) font = Graph.font;
+            if (color.IsEmpty) color = Color.DarkBlue;
+
+            chart.Series.Add(nameLine);
+            chart.Series[nameLine].BorderDashStyle = chartDashStyle;
+            chart.Series[nameLine].BorderWidth = borderWidth;
+            chart.Series[nameLine].Color = color;
+            chart.Series[nameLine].Font = font;
+            chart.Series[nameLine].ChartType = chartType;
+            chart.Update();
+        }
+        #endregion
+
+        #region Method AxisXY_Min_Max
+        public static void AxisXY_Min_Max(this Chart chart, string areasName, double minX, double maxX,
+                                          double minY, double maxY, bool isClear = false)
+        {
+            if (isClear) chart.Series.Clear();
+            chart.ChartAreas[areasName].AxisX.Minimum = minX;
+            chart.ChartAreas[areasName].AxisX.Maximum = maxX;
+
+            chart.ChartAreas[areasName].AxisY.Minimum = minY;
+            chart.ChartAreas[areasName].AxisY.Maximum = maxY;
+        }
+        #endregion
     }
 }
