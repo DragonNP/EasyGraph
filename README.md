@@ -5,7 +5,7 @@ EasyGraph - это простая программа которая поможе
 ## Установка
 
 Вы можете скачать программу для:
-- [Windows (64bit)]()
+- [Windows](https://github.com/DragonNP/EasyGraph/releases/download/v1.1/EasyGraph.exe)
 
 ## Документация:
 
