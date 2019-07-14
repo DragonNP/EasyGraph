@@ -35,13 +35,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.showValue = new System.Windows.Forms.ToolStripMenuItem();
+            this.showValues = new System.Windows.Forms.ToolStripMenuItem();
             this.Options = new System.Windows.Forms.ToolStripMenuItem();
             this.Language = new System.Windows.Forms.ToolStripMenuItem();
             this.LanguageEnglish = new System.Windows.Forms.ToolStripMenuItem();
             this.LanguageRussian = new System.Windows.Forms.ToolStripMenuItem();
-            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.Donation = new System.Windows.Forms.ToolStripMenuItem();
+            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -135,7 +135,7 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showValue,
+            this.showValues,
             this.Options,
             this.Donation});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -145,12 +145,12 @@
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // showValue
+            // showValues
             // 
-            this.showValue.Name = "showValue";
-            this.showValue.Size = new System.Drawing.Size(117, 19);
-            this.showValue.Text = "Показать значения";
-            this.showValue.Click += new System.EventHandler(this.ShowValue_Click);
+            this.showValues.Name = "showValues";
+            this.showValues.Size = new System.Drawing.Size(117, 19);
+            this.showValues.Text = "Показать значения";
+            this.showValues.Click += new System.EventHandler(this.ShowValue_Click);
             // 
             // Options
             // 
@@ -166,20 +166,26 @@
             this.LanguageEnglish,
             this.LanguageRussian});
             this.Language.Name = "Language";
-            this.Language.Size = new System.Drawing.Size(180, 22);
+            this.Language.Size = new System.Drawing.Size(100, 22);
             this.Language.Text = "Язык";
             // 
             // LanguageEnglish
             // 
             this.LanguageEnglish.Name = "LanguageEnglish";
-            this.LanguageEnglish.Size = new System.Drawing.Size(180, 22);
+            this.LanguageEnglish.Size = new System.Drawing.Size(111, 22);
             this.LanguageEnglish.Text = "English";
             // 
             // LanguageRussian
             // 
             this.LanguageRussian.Name = "LanguageRussian";
-            this.LanguageRussian.Size = new System.Drawing.Size(180, 22);
+            this.LanguageRussian.Size = new System.Drawing.Size(111, 22);
             this.LanguageRussian.Text = "Russian";
+            // 
+            // Donation
+            // 
+            this.Donation.Name = "Donation";
+            this.Donation.Size = new System.Drawing.Size(100, 19);
+            this.Donation.Text = "Пожертвование";
             // 
             // richTextBox3
             // 
@@ -194,12 +200,6 @@
             this.richTextBox3.TabIndex = 16;
             this.richTextBox3.TabStop = false;
             this.richTextBox3.Text = "";
-            // 
-            // Donation
-            // 
-            this.Donation.Name = "Donation";
-            this.Donation.Size = new System.Drawing.Size(100, 19);
-            this.Donation.Text = "Пожертвование";
             // 
             // Form1
             // 
@@ -238,7 +238,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox richTextBox2;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem showValue;
+        private System.Windows.Forms.ToolStripMenuItem showValues;
         private System.Windows.Forms.RichTextBox richTextBox3;
         private System.Windows.Forms.ToolStripMenuItem Options;
         private System.Windows.Forms.ToolStripMenuItem Language;
