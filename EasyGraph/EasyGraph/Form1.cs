@@ -17,27 +17,24 @@ namespace EasyGraph
         public Form1()
         {
             InitializeComponent();
-        }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+            // Инециализируем график
             chart.Initialize(title: "График", legendsTitle: "Легенда");
         }
 
         private void ShowValue_Click(object sender, EventArgs e)
         {
             richTextBox3.Text = $"x = {string.Join(" ", x)}\n" +
-                $"y = { string.Join(" ", y)}";
+                                $"y = {string.Join(" ", y)}";
         }
 
         private List<double> Random(string text)
         {
 
             double min, max, col;
-            text = text.Replace("random", "");
-            text = text.Replace("(", "");
-            text = text.Replace(")", "");
             text = text.Replace(" ", "");
+            text = text.Replace("random(", "");
+            text = text.Replace(")", "");
             string[] str = text.Split(',');
             List<double> list = new List<double>();
 

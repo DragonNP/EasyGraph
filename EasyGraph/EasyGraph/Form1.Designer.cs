@@ -153,8 +153,10 @@
             this.richTextBox3.Location = new System.Drawing.Point(345, 37);
             this.richTextBox3.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.ReadOnly = true;
             this.richTextBox3.Size = new System.Drawing.Size(226, 76);
             this.richTextBox3.TabIndex = 16;
+            this.richTextBox3.TabStop = false;
             this.richTextBox3.Text = "";
             // 
             // Form1
@@ -178,7 +180,6 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EasyGraph";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
