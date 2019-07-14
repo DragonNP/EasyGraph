@@ -21,4 +21,4 @@ You can download the program for:
 - `random(0, 10, 15)` Displays 15 random numbers between 0 and 10
 
 ## Licence
-EasyGraph is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+EasyGraph is open-source software licensed under the [MIT license](https://github.com/DragonNP/EasyGraph/blob/master/LICENSE).
