@@ -26,8 +26,8 @@ namespace EasyGraph
 
         private void ShowValue_Click(object sender, EventArgs e)
         {
-            richTextBox3.Text = $"x = {string.Join("; ", x)}\n" +
-                $"y = { string.Join("; ", y)}";
+            richTextBox3.Text = $"x = {string.Join(" ", x)}\n" +
+                $"y = { string.Join(" ", y)}";
         }
 
         private List<double> Random(string text)
@@ -145,21 +145,21 @@ namespace EasyGraph
                     else if (maxX < x[i]) maxX = x[i];
                 }
 
-                chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY);
+                chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY, isClear:true);
                 chart.AddSeries(nameLine: "Линия 1", borderWidth: 3);
 
                 for (int i = 0; i < (x.Count >= y.Count ? y.Count : x.Count); i++)
                 {
-                    chart.Series["line1"].Points.AddXY(x[i], y[i]);
+                    chart.Series["Линия 1"].Points.AddXY(x[i], y[i]);
                     chart.Update();
                 }
-                chart.Series["line1"].ToolTip = "X = #VALX, Y = #VALY";
+                chart.Series["Линия 1"].ToolTip = "X = #VALX, Y = #VALY";
             }));
         }
     }
     public static class Graph
     {
-        private static Font font = new Font("Segoe UI Semilight", 18, FontStyle.Regular);
+        private static Font font = new Font("Arial", 12, FontStyle.Regular);
 
         #region Method public Initialize
         public static void Initialize(this Chart chart,
@@ -177,8 +177,10 @@ namespace EasyGraph
             Graph.font = font;
 
             chart.Titles.Add(title).Font = font;
-            chart.Legends.Add(title);
-            chart.Legends[title].Title = legendsTitle;
+
+            chart.Legends.Add(legendsTitle);
+            chart.Legends[legendsTitle].Title = legendsTitle;
+            chart.Legends[legendsTitle].TitleFont = font;
 
             chart.ChartAreas.Add(areasName);
             chart.ChartAreas[areasName].AxisX.Title = axisXTitle;
