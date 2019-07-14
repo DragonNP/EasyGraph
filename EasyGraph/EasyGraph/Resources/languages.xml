@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<languages>
+	<language lang="English">
+		<show_values>Show values</show_values>
+		<options>Options</options>
+		<languageMenuStrip>Language</languageMenuStrip>
+		<donation>Donation</donation>
+		<build>Build</build>
+		<graph>Graph</graph>
+		<legend>Legend</legend>
+		<line>Line</line>
+	</language>
+	<language lang="Russian">
+		<show_values>Показать значения</show_values>
+		<options>Опции</options>
+		<languageMenuStrip>Язык</languageMenuStrip>
+		<donation>Пожертвование</donation>
+		<build>Построить</build>
+		<graph>График</graph>
+		<legend>Легенда</legend>
+		<line>Линия</line>
+	</language>
+</languages>

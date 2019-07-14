@@ -1,10 +1,12 @@
-﻿using Microsoft.Win32;
+﻿using EasyGraph.Properties;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
+using System.Resources;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Xml;
 
 namespace EasyGraph
 {
@@ -19,10 +21,13 @@ namespace EasyGraph
         public Form1()
         {
             InitializeComponent();
-            ReadLanguage();
+            ParsingLanguage(ReadLanguage());
+            SetNames();
+
 
             // Инециализируем график
-            chart.Initialize(title: "График", legendsTitle: "Легенда");
+            chart.Initialize(title: Config.Graph, legendsTitle: Config.Legend, font: Config.font);
+
 
             // Если пользователь нажал на кпопку доната
             Donation.Click += (s, e) => 
@@ -33,6 +38,8 @@ namespace EasyGraph
                 LanguageRussian.Checked = true;
                 LanguageEnglish.Checked = false;
                 SetLanguage("Russian");
+                Application.Restart();
+                Environment.Exit(0);
             };
 
             LanguageEnglish.Click += (s, e) =>
@@ -40,6 +47,8 @@ namespace EasyGraph
                 LanguageRussian.Checked = false;
                 LanguageEnglish.Checked = true;
                 SetLanguage("English");
+                Application.Restart();
+                Environment.Exit(0);
             };
         }
 
@@ -49,10 +58,67 @@ namespace EasyGraph
                                 $"y = {string.Join(" ", y)}";
         }
 
-
-        private void ParsingLanguage(string name)
+        void SetNames()
         {
+            showValues.Text = Config.Show_values;
+            Options.Text = Config.Options;
+            Donation.Text = Config.Donation;
+            Language.Text = Config.LanguageMenuStrip;
+            Done.Text = Config.Build;
 
+        }
+
+        private void ParsingLanguage(string lang)
+        {
+            ResourceManager RM = new ResourceManager("EasyGraph.Properties.Resources", typeof(Resources).Assembly);
+
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.LoadXml(RM.GetObject("languages").ToString());
+            XmlElement xRoot = xDoc.DocumentElement;
+
+
+            foreach (XmlNode xnode in xRoot)
+            {
+                if (xnode.Attributes.GetNamedItem("lang").Value != lang)
+                    continue;
+                foreach (XmlNode childnode in xnode.ChildNodes)
+                {
+                    switch (childnode.Name)
+                    {
+                        case "show_values":
+                            Config.Show_values = childnode.InnerText;
+                            break;
+
+                        case "options":
+                            Config.Options = childnode.InnerText;
+                            break;
+
+                        case "languageMenuStrip":
+                            Config.LanguageMenuStrip = childnode.InnerText;
+                            break;
+
+                        case "donation":
+                            Config.Donation = childnode.InnerText;
+                            break;
+
+                        case "build":
+                            Config.Build = childnode.InnerText;
+                            break;
+
+                        case "graph":
+                            Config.Graph = childnode.InnerText;
+                            break;
+
+                        case "legend":
+                            Config.Legend = childnode.InnerText;
+                            break;
+
+                        case "line":
+                            Config.Line = childnode.InnerText;
+                            break;
+                    }
+                }
+            }
         }
 
         private void SetLanguage(string language)
@@ -62,19 +128,19 @@ namespace EasyGraph
                 switch (language)
                 {
                     case "Russian":
-                        key.SetValue("Language", "russian");
-                        ParsingLanguage("russian.ini");
+                        key.SetValue("Language", "Russian");
+                        ParsingLanguage("Russian");
                         break;
 
                     case "English":
                         key.SetValue("Language", "English");
-                        ParsingLanguage("english.ini");
+                        ParsingLanguage("English");
                         break;
                 }
             }
         }
 
-        void ReadLanguage()
+        string ReadLanguage()
         {
             using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
             {
@@ -86,7 +152,7 @@ namespace EasyGraph
                     key.SetValue("Language", "English");
                     language = key.GetValue("Language").ToString();
                 }
-                MessageBox.Show(language);
+                return language;
             }
         }
 
@@ -205,36 +271,34 @@ namespace EasyGraph
                 }
 
                 chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY, isClear:true);
-                chart.AddSeries(nameLine: "Линия 1", borderWidth: 3);
+                chart.AddSeries(nameLine: Config.Line, borderWidth: 3, font: Config.font);
 
                 for (int i = 0; i < (x.Count >= y.Count ? y.Count : x.Count); i++)
                 {
-                    chart.Series["Линия 1"].Points.AddXY(x[i], y[i]);
+                    chart.Series[Config.Line].Points.AddXY(x[i], y[i]);
                     chart.Update();
                 }
-                chart.Series["Линия 1"].ToolTip = "X = #VALX, Y = #VALY";
+                chart.Series[Config.Line].ToolTip = "X = #VALX, Y = #VALY";
             }));
         }
 
     }
     public static class Graph
     {
-        private static Font font = new Font("Arial", 12, FontStyle.Regular);
+        //private static Font font = new Font("Arial", 12, FontStyle.Regular);
 
         #region Method public Initialize
         public static void Initialize(this Chart chart,
-                                      string title = "График by DragonNP",
-                                      string areasName = "area",
-                                      string legendsTitle = "Legends",
+                                      string title,
+                                      string legendsTitle,
+                                      Font font,
                                       string axisXTitle = "X",
                                       string axisYTitle = "Y",
+                                      string areasName = "area",
                                       Color color = default,
-                                      AxisArrowStyle axisArrowStyle = AxisArrowStyle.Triangle,
-                                      Font font = default)
+                                      AxisArrowStyle axisArrowStyle = AxisArrowStyle.Triangle)
         {
-            if (font == null) font = Graph.font;
             if (color.IsEmpty) color = Color.Black;
-            Graph.font = font;
 
             chart.Titles.Add(title).Font = font;
 
@@ -267,14 +331,13 @@ namespace EasyGraph
 
         #region Method public AddSeries
         public static void AddSeries(this Chart chart,
+                                      Font font = default,
                                       string nameLine = "Line1",
                                       ChartDashStyle chartDashStyle = ChartDashStyle.Solid,
                                       int borderWidth = 5,
                                       Color color = default,
-                                      Font font = default,
                                       SeriesChartType chartType = SeriesChartType.Line)
         {
-            if (font == null) font = Graph.font;
             if (color.IsEmpty) color = Color.DarkBlue;
 
             chart.Series.Add(nameLine);
