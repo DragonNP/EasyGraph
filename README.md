@@ -1,20 +1,24 @@
 # EasyGraph
 
-EasyGraph - это простая программа которая поможет тебе в создании графиков!
+EasyGraph is a simple program that will help you to create charts!
 
-## Установка
+## Download
 
-Вы можете скачать программу для:
+You can download the program for:
 - [Windows](https://github.com/DragonNP/EasyGraph/releases/download/v1.1/EasyGraph.exe)
 
-## Документация:
+## Documentation:
 
-### Методы
+### Methods
 
 #### `random()`
-- Метод random() принимает несколько значений:
-  - Минимальное число
-  - Максимальное число
-  - Сколько чисел сгенерировать
-#### Пример
-- `random(0, 10, 15)` Выведет 15 рандомных чисел в пределах от 0 до 10
+- Method random() accepts multiple values:
+  - Minimum value
+  - Maxminm value
+  - And how many numbers to generate
+#### Examples
+
+- `random(0, 10, 15)` Displays 15 random numbers between 0 and 10
+
+## Licence
+EasyGraph is open-source software licensed under the [MIT license](https://github.com/DragonNP/EasyGraph/blob/master/LICENSE).
