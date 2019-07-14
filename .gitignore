@@ -14,6 +14,9 @@ x64/
 [Bb]in/
 [Oo]bj/
 
+# Visual Studio 2019 cache/options directory
+.vs/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -129,7 +132,3 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-
-EasyGraph/EasyGraph.vs/*
-
-
