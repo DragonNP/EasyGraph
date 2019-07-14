@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -14,18 +15,79 @@ namespace EasyGraph
         private List<double> y = new List<double>();
         private readonly Random random = new Random();
 
+
         public Form1()
         {
             InitializeComponent();
+            ReadLanguage();
 
             // Инециализируем график
             chart.Initialize(title: "График", legendsTitle: "Легенда");
+
+            // Если пользователь нажал на кпопку доната
+            Donation.Click += (s, e) => 
+                System.Diagnostics.Process.Start("https://money.yandex.ru/to/410016387696692");
+
+            LanguageRussian.Click += (s, e) =>
+            {
+                LanguageRussian.Checked = true;
+                LanguageEnglish.Checked = false;
+                SetLanguage("Russian");
+            };
+
+            LanguageEnglish.Click += (s, e) =>
+            {
+                LanguageRussian.Checked = false;
+                LanguageEnglish.Checked = true;
+                SetLanguage("English");
+            };
         }
 
         private void ShowValue_Click(object sender, EventArgs e)
         {
             richTextBox3.Text = $"x = {string.Join(" ", x)}\n" +
                                 $"y = {string.Join(" ", y)}";
+        }
+
+
+        private void ParsingLanguage(string name)
+        {
+
+        }
+
+        private void SetLanguage(string language)
+        {
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
+            {
+                switch (language)
+                {
+                    case "Russian":
+                        key.SetValue("Language", "russian");
+                        ParsingLanguage("russian.ini");
+                        break;
+
+                    case "English":
+                        key.SetValue("Language", "English");
+                        ParsingLanguage("english.ini");
+                        break;
+                }
+            }
+        }
+
+        void ReadLanguage()
+        {
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
+            {
+                string language;
+                if (key.GetValue("Language", null) != null)
+                    language = key.GetValue("Language").ToString();
+                else
+                {
+                    key.SetValue("Language", "English");
+                    language = key.GetValue("Language").ToString();
+                }
+                MessageBox.Show(language);
+            }
         }
 
         private List<double> Random(string text)
@@ -153,6 +215,7 @@ namespace EasyGraph
                 chart.Series["Линия 1"].ToolTip = "X = #VALX, Y = #VALY";
             }));
         }
+
     }
     public static class Graph
     {
