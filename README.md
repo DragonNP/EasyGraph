@@ -5,7 +5,7 @@ EasyGraph is a simple program that will help you to create charts!
 ## Download
 
 You can download the program for:
-- [Windows](https://github.com/DragonNP/EasyGraph/releases/download/v1.2/EasyGraph.exe)
+- [Windows](https://github.com/DragonNP/EasyGraph/releases/download/v1.3/EasyGraph.exe)
 
 ## Documentation:
 
