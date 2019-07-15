@@ -13,23 +13,36 @@ namespace EasyGraph
 {
     public partial class Form1 : Form
     {
-        private bool isContinue = true;
         private List<double> x = new List<double>();
         private List<double> y = new List<double>();
-        private readonly Random random = new Random();
-
-        List<DataPoint> point = new List<DataPoint>();
+        private readonly List<DataPoint> point = new List<DataPoint>();
 
         public Form1()
         {
             InitializeComponent();
             Languages.ParsingLanguage();
             SetNames();
-
-            // Инециализируем график
             chart.Initialize(title: Config.Graph, legendsTitle: Config.Legend, font: Config.font);
 
-            // Если пользователь нажал на кпопку доната
+            Save.Filter = "PNG Image(*.png)|*.png|" +
+                "JPEG Image(*.jpeg)|*.jpeg|" +
+                "BMP Image(*.bmp)|*.bmp|";
+
+            SaveAs.Click += (s, e) =>
+            {
+                Save.FileName = "Chart";
+                if (Save.ShowDialog() == DialogResult.Cancel)
+                    return;
+
+                string filename = Save.FileName;
+                switch (Save.FilterIndex)
+                {
+                    case 1: chart.SaveImage(filename, System.Drawing.Imaging.ImageFormat.Png);  break;
+                    case 2: chart.SaveImage(filename, System.Drawing.Imaging.ImageFormat.Jpeg); break;
+                    case 3: chart.SaveImage(filename, System.Drawing.Imaging.ImageFormat.Png); break;
+                }
+            };
+
             Donation.Click += (s, e) => 
                 System.Diagnostics.Process.Start("https://money.yandex.ru/to/410016387696692");
 
@@ -56,6 +69,14 @@ namespace EasyGraph
                 Application.Restart();
                 Environment.Exit(0);
             };
+
+            KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter && richTextBox1.Focused)
+                    richTextBox2.Focus();
+                else if (e.KeyCode == Keys.Enter && richTextBox2.Focused)
+                    Build_Click(Build, null);                    
+            };
         }
 
         void SetNames()
@@ -64,7 +85,7 @@ namespace EasyGraph
             Options.Text = Config.Options;
             Donation.Text = Config.Donation;
             Language.Text = Config.LanguageMenuStrip;
-            Done.Text = Config.Build;
+            Build.Text = Config.Build;
             if (Config.Show_values == "Show values")
             {
                 LanguageRussian.Checked = false;
@@ -77,82 +98,32 @@ namespace EasyGraph
             }
         }
 
-        private List<double> Random(string text)
-        {
-
-            double min, max, col;
-            text = text.Replace(" ", "");
-            text = text.Replace("random(", "");
-            text = text.Replace(")", "");
-            string[] str = text.Split(',');
-            List<double> list = new List<double>();
-
-            min = double.Parse(str[0], System.Globalization.CultureInfo.InvariantCulture);
-            max = double.Parse(str[1], System.Globalization.CultureInfo.InvariantCulture);
-            col = double.Parse(str[2], System.Globalization.CultureInfo.InvariantCulture);
-
-            for (int i = 0; i <= col; i++)
-                list.Add(Math.Round(random.NextDouble() * (max - min) + min, 2));
-            return list;
-        }
-
-        private List<double> Parser(string text)
-        {
-            double first, step, end;
-            string[] str = text.Split(':');
-            List<double> list = new List<double>();
-
-            if (str.Length == 3)
-            {
-                first = double.Parse(str[0], System.Globalization.CultureInfo.InvariantCulture);
-                step = double.Parse(str[1], System.Globalization.CultureInfo.InvariantCulture);
-                end = double.Parse(str[2], System.Globalization.CultureInfo.InvariantCulture);
-
-                for (double i = first; i <= end; i += step)
-                    list.Add(i);
-                return list;
-            }
-            else
-            {
-                MessageBox.Show(caption: "Ошибка",
-                    text: "Неверно задан пареметр!\nФормат нач.значение:шаг:кон.значение или нач.значение:кон.значение",
-                    buttons: MessageBoxButtons.OK,
-                    icon: MessageBoxIcon.Error);
-                isContinue = false;
-                return null;
-            }
-        }
-
-        private void Done_Click(object sender, EventArgs e)
+        private void Build_Click(object sender, EventArgs e)
         {
             x.Clear();
             y.Clear();
 
             Invoke((MethodInvoker)(() =>
             {
-                isContinue = true;
+                Utilities.isContinue = true;
                 if (richTextBox1.Text.Contains(":"))
-                    x = Parser(richTextBox1.Text);
+                    x = Utilities.Parser(richTextBox1.Text);
                 else if (richTextBox1.Text == "y")
                     x = y;
                 else if (richTextBox1.Text.Contains("random"))
-                    x = Random(richTextBox1.Text);
+                    x = Utilities.Random(richTextBox1.Text);
                 else
                 {
                     foreach (string i in richTextBox1.Text.Split(new char[] { '\n', ' ' }))
                         x.Add(double.Parse(i, System.Globalization.CultureInfo.InvariantCulture));
                 }
-            }));
 
-            Invoke((MethodInvoker)(() =>
-            {
-                isContinue = true;
                 if (richTextBox2.Text.Contains(":"))
-                    y = Parser(richTextBox2.Text);
+                    y = Utilities.Parser(richTextBox2.Text);
                 else if (richTextBox2.Text == "x")
                     y = x;
                 else if (richTextBox2.Text.Contains("random"))
-                    y = Random(richTextBox2.Text);
+                    y = Utilities.Random(richTextBox2.Text);
                 else
                 {
                     foreach (string i in richTextBox2.Text.Split(new char[] { '\n', ' ' }))
@@ -160,7 +131,7 @@ namespace EasyGraph
                 }
             }));
 
-            if (isContinue)
+            if (Utilities.isContinue)
                 ToDisplayGraph(x, y);
         }
 
@@ -203,9 +174,6 @@ namespace EasyGraph
                 }
                 
                 chart.Series[Config.Line].ToolTip = "X = #VALX, Y = #VALY";
-
- 
-
             }));
         }
 

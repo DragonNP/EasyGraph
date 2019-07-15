@@ -30,11 +30,13 @@
         {
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.Done = new System.Windows.Forms.Button();
+            this.Build = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.File = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveAs = new System.Windows.Forms.ToolStripMenuItem();
             this.showValues = new System.Windows.Forms.ToolStripMenuItem();
             this.Options = new System.Windows.Forms.ToolStripMenuItem();
             this.Language = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,6 +44,7 @@
             this.LanguageRussian = new System.Windows.Forms.ToolStripMenuItem();
             this.Donation = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
+            this.Save = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -56,7 +59,7 @@
             this.chart.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
             this.chart.Name = "chart";
             this.chart.Size = new System.Drawing.Size(556, 347);
-            this.chart.TabIndex = 5;
+            this.chart.TabIndex = 4;
             this.chart.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.SystemDefault;
             this.chart.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Chart_MouseClick);
             // 
@@ -71,25 +74,25 @@
             this.richTextBox1.Multiline = false;
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(300, 18);
-            this.richTextBox1.TabIndex = 6;
+            this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = "0:1:10";
             // 
-            // Done
+            // Build
             // 
-            this.Done.AutoSize = true;
-            this.Done.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Done.FlatAppearance.BorderSize = 0;
-            this.Done.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Done.Font = new System.Drawing.Font("Arial", 12F);
-            this.Done.ForeColor = System.Drawing.Color.Black;
-            this.Done.Location = new System.Drawing.Point(126, 85);
-            this.Done.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
-            this.Done.Name = "Done";
-            this.Done.Size = new System.Drawing.Size(95, 28);
-            this.Done.TabIndex = 8;
-            this.Done.Text = "Построить";
-            this.Done.UseVisualStyleBackColor = false;
-            this.Done.Click += new System.EventHandler(this.Done_Click);
+            this.Build.AutoSize = true;
+            this.Build.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Build.FlatAppearance.BorderSize = 0;
+            this.Build.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Build.Font = new System.Drawing.Font("Arial", 12F);
+            this.Build.ForeColor = System.Drawing.Color.Black;
+            this.Build.Location = new System.Drawing.Point(126, 85);
+            this.Build.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
+            this.Build.Name = "Build";
+            this.Build.Size = new System.Drawing.Size(95, 28);
+            this.Build.TabIndex = 3;
+            this.Build.Text = "Построить";
+            this.Build.UseVisualStyleBackColor = false;
+            this.Build.Click += new System.EventHandler(this.Build_Click);
             // 
             // label1
             // 
@@ -130,12 +133,13 @@
             this.richTextBox2.Multiline = false;
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.Size = new System.Drawing.Size(300, 18);
-            this.richTextBox2.TabIndex = 10;
+            this.richTextBox2.TabIndex = 2;
             this.richTextBox2.Text = "0:1:10";
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.File,
             this.showValues,
             this.Options,
             this.Donation});
@@ -145,6 +149,20 @@
             this.menuStrip1.Size = new System.Drawing.Size(584, 24);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // File
+            // 
+            this.File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SaveAs});
+            this.File.Name = "File";
+            this.File.Size = new System.Drawing.Size(45, 18);
+            this.File.Text = "Файл";
+            // 
+            // SaveAs
+            // 
+            this.SaveAs.Name = "SaveAs";
+            this.SaveAs.Size = new System.Drawing.Size(180, 22);
+            this.SaveAs.Text = "Сохранаить как...";
             // 
             // showValues
             // 
@@ -197,7 +215,7 @@
             this.richTextBox3.Name = "richTextBox3";
             this.richTextBox3.ReadOnly = true;
             this.richTextBox3.Size = new System.Drawing.Size(226, 76);
-            this.richTextBox3.TabIndex = 16;
+            this.richTextBox3.TabIndex = 5;
             this.richTextBox3.TabStop = false;
             this.richTextBox3.Text = "";
             // 
@@ -212,7 +230,7 @@
             this.Controls.Add(this.richTextBox3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Done);
+            this.Controls.Add(this.Build);
             this.Controls.Add(this.chart);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Arial", 12F);
@@ -234,7 +252,7 @@
         #endregion
         private System.Windows.Forms.DataVisualization.Charting.Chart chart;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button Done;
+        private System.Windows.Forms.Button Build;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox richTextBox2;
@@ -246,6 +264,9 @@
         private System.Windows.Forms.ToolStripMenuItem Donation;
         public System.Windows.Forms.ToolStripMenuItem LanguageRussian;
         public System.Windows.Forms.ToolStripMenuItem LanguageEnglish;
+        private System.Windows.Forms.ToolStripMenuItem File;
+        private System.Windows.Forms.ToolStripMenuItem SaveAs;
+        private System.Windows.Forms.SaveFileDialog Save;
     }
 }
 
