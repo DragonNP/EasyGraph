@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Resources;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
@@ -17,45 +18,44 @@ namespace EasyGraph
         private List<double> y = new List<double>();
         private readonly Random random = new Random();
 
+        List<DataPoint> point = new List<DataPoint>();
 
         public Form1()
         {
             InitializeComponent();
-            ParsingLanguage(ReadLanguage());
+            Languages.ParsingLanguage();
             SetNames();
-
 
             // Инециализируем график
             chart.Initialize(title: Config.Graph, legendsTitle: Config.Legend, font: Config.font);
-
 
             // Если пользователь нажал на кпопку доната
             Donation.Click += (s, e) => 
                 System.Diagnostics.Process.Start("https://money.yandex.ru/to/410016387696692");
 
+            showValues.Click += (s, e) =>
+            {
+                richTextBox3.Text = $"x = {string.Join(" ", x)}\n" +
+                    $"y = {string.Join(" ", y)}";
+            };
+
             LanguageRussian.Click += (s, e) =>
             {
-                LanguageRussian.Checked = true;
-                LanguageEnglish.Checked = false;
-                SetLanguage("Russian");
+                Languages.SetLanguage(LanguageRussian: ref LanguageRussian,
+                      LanguageEnglish: ref LanguageEnglish,
+                      "Russian");
                 Application.Restart();
                 Environment.Exit(0);
             };
 
             LanguageEnglish.Click += (s, e) =>
             {
-                LanguageRussian.Checked = false;
-                LanguageEnglish.Checked = true;
-                SetLanguage("English");
+                Languages.SetLanguage(LanguageRussian: ref LanguageRussian,
+                      LanguageEnglish: ref LanguageEnglish,
+                      "English");
                 Application.Restart();
                 Environment.Exit(0);
             };
-        }
-
-        private void ShowValue_Click(object sender, EventArgs e)
-        {
-            richTextBox3.Text = $"x = {string.Join(" ", x)}\n" +
-                                $"y = {string.Join(" ", y)}";
         }
 
         void SetNames()
@@ -65,94 +65,15 @@ namespace EasyGraph
             Donation.Text = Config.Donation;
             Language.Text = Config.LanguageMenuStrip;
             Done.Text = Config.Build;
-
-        }
-
-        private void ParsingLanguage(string lang)
-        {
-            ResourceManager RM = new ResourceManager("EasyGraph.Properties.Resources", typeof(Resources).Assembly);
-
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.LoadXml(RM.GetObject("languages").ToString());
-            XmlElement xRoot = xDoc.DocumentElement;
-
-
-            foreach (XmlNode xnode in xRoot)
+            if (Config.Show_values == "Show values")
             {
-                if (xnode.Attributes.GetNamedItem("lang").Value != lang)
-                    continue;
-                foreach (XmlNode childnode in xnode.ChildNodes)
-                {
-                    switch (childnode.Name)
-                    {
-                        case "show_values":
-                            Config.Show_values = childnode.InnerText;
-                            break;
-
-                        case "options":
-                            Config.Options = childnode.InnerText;
-                            break;
-
-                        case "languageMenuStrip":
-                            Config.LanguageMenuStrip = childnode.InnerText;
-                            break;
-
-                        case "donation":
-                            Config.Donation = childnode.InnerText;
-                            break;
-
-                        case "build":
-                            Config.Build = childnode.InnerText;
-                            break;
-
-                        case "graph":
-                            Config.Graph = childnode.InnerText;
-                            break;
-
-                        case "legend":
-                            Config.Legend = childnode.InnerText;
-                            break;
-
-                        case "line":
-                            Config.Line = childnode.InnerText;
-                            break;
-                    }
-                }
+                LanguageRussian.Checked = false;
+                LanguageEnglish.Checked = true;
             }
-        }
-
-        private void SetLanguage(string language)
-        {
-            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
+            else
             {
-                switch (language)
-                {
-                    case "Russian":
-                        key.SetValue("Language", "Russian");
-                        ParsingLanguage("Russian");
-                        break;
-
-                    case "English":
-                        key.SetValue("Language", "English");
-                        ParsingLanguage("English");
-                        break;
-                }
-            }
-        }
-
-        string ReadLanguage()
-        {
-            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
-            {
-                string language;
-                if (key.GetValue("Language", null) != null)
-                    language = key.GetValue("Language").ToString();
-                else
-                {
-                    key.SetValue("Language", "English");
-                    language = key.GetValue("Language").ToString();
-                }
-                return language;
+                LanguageRussian.Checked = true;
+                LanguageEnglish.Checked = false;
             }
         }
 
@@ -271,21 +192,48 @@ namespace EasyGraph
                 }
 
                 chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY, isClear:true);
+                point.Clear();
                 chart.AddSeries(nameLine: Config.Line, borderWidth: 3, font: Config.font);
 
                 for (int i = 0; i < (x.Count >= y.Count ? y.Count : x.Count); i++)
                 {
-                    chart.Series[Config.Line].Points.AddXY(x[i], y[i]);
+                    point.Add(new DataPoint(x[i], y[i]));
+                    chart.Series[Config.Line].Points.Add(point[i]);
                     chart.Update();
                 }
+                
                 chart.Series[Config.Line].ToolTip = "X = #VALX, Y = #VALY";
+
+ 
+
             }));
         }
 
+        private void Chart_MouseClick(object sender, MouseEventArgs e)
+        {
+            var res = chart.HitTest(e.X, e.Y);
+            if (res.Series != null)
+            {
+                for(int i = 0; i < point.Count; i++)
+                {
+                    if(point[i].XValue == res.Series.Points[res.PointIndex].XValue &&
+                        point[i].YValues[0] == res.Series.Points[res.PointIndex].YValues[0])
+                    {
+                        chart.Series[Config.Line].Points[i].Label = "x=" + point[i].XValue + " y=" + point[i].YValues[0];
+                        chart.Series[Config.Line].Points[i].LabelBackColor = chart.BackColor;
+
+                        chart.Series[Config.Line].Points[i].MarkerColor = Color.Red;
+                        chart.Series[Config.Line].Points[i].MarkerStyle = MarkerStyle.Circle;
+                        chart.Series[Config.Line].Points[i].MarkerSize = 6;
+                        chart.Update();
+                    }
+                }
+            }
+
+        }
     }
     public static class Graph
     {
-        //private static Font font = new Font("Arial", 12, FontStyle.Regular);
 
         #region Method public Initialize
         public static void Initialize(this Chart chart,
