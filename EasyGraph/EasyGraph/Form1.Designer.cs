@@ -58,6 +58,7 @@
             this.chart.Size = new System.Drawing.Size(556, 347);
             this.chart.TabIndex = 5;
             this.chart.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.SystemDefault;
+            this.chart.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Chart_MouseClick);
             // 
             // richTextBox1
             // 
@@ -71,7 +72,7 @@
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(300, 18);
             this.richTextBox1.TabIndex = 6;
-            this.richTextBox1.Text = "";
+            this.richTextBox1.Text = "0:1:10";
             // 
             // Done
             // 
@@ -130,7 +131,7 @@
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.Size = new System.Drawing.Size(300, 18);
             this.richTextBox2.TabIndex = 10;
-            this.richTextBox2.Text = "";
+            this.richTextBox2.Text = "0:1:10";
             // 
             // menuStrip1
             // 
@@ -141,23 +142,22 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(584, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(584, 24);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // showValues
             // 
             this.showValues.Name = "showValues";
-            this.showValues.Size = new System.Drawing.Size(117, 19);
+            this.showValues.Size = new System.Drawing.Size(117, 18);
             this.showValues.Text = "Показать значения";
-            this.showValues.Click += new System.EventHandler(this.ShowValue_Click);
             // 
             // Options
             // 
             this.Options.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Language});
             this.Options.Name = "Options";
-            this.Options.Size = new System.Drawing.Size(51, 19);
+            this.Options.Size = new System.Drawing.Size(51, 18);
             this.Options.Text = "Опции";
             // 
             // Language
@@ -184,7 +184,7 @@
             // Donation
             // 
             this.Donation.Name = "Donation";
-            this.Donation.Size = new System.Drawing.Size(100, 19);
+            this.Donation.Size = new System.Drawing.Size(100, 18);
             this.Donation.Text = "Пожертвование";
             // 
             // richTextBox3
@@ -217,6 +217,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Arial", 12F);
             this.ForeColor = System.Drawing.Color.Black;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
             this.Name = "Form1";
@@ -242,9 +243,9 @@
         private System.Windows.Forms.RichTextBox richTextBox3;
         private System.Windows.Forms.ToolStripMenuItem Options;
         private System.Windows.Forms.ToolStripMenuItem Language;
-        private System.Windows.Forms.ToolStripMenuItem LanguageRussian;
-        private System.Windows.Forms.ToolStripMenuItem LanguageEnglish;
         private System.Windows.Forms.ToolStripMenuItem Donation;
+        public System.Windows.Forms.ToolStripMenuItem LanguageRussian;
+        public System.Windows.Forms.ToolStripMenuItem LanguageEnglish;
     }
 }
 
