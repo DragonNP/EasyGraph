@@ -1,32 +1,26 @@
-﻿using EasyGraph.Properties;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Resources;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.Xml;
 
 namespace EasyGraph
 {
     public partial class Form1 : Form
     {
         private List<double> x = new List<double>();
-        private List<double> y = new List<double>();
+        private List<string> y = new List<string>();
         private readonly List<DataPoint> point = new List<DataPoint>();
-
+  
         public Form1()
         {
             InitializeComponent();
             Languages.ParsingLanguage();
             SetNames();
-            chart.Initialize(title: Config.Graph, legendsTitle: Config.Legend, font: Config.font);
+            chart.Initialize(title: Config.LanguageLocale[5], legendsTitle: Config.LanguageLocale[6], font: Config.font);
 
-            Save.Filter = "PNG Image(*.png)|*.png|" +
-                "JPEG Image(*.jpeg)|*.jpeg|" +
-                "BMP Image(*.bmp)|*.bmp|";
+           Save.Filter = "*.bmp|*.bmp;|*.png|*.png;|*.jpg|*.jpg";
 
             SaveAs.Click += (s, e) =>
             {
@@ -34,12 +28,11 @@ namespace EasyGraph
                 if (Save.ShowDialog() == DialogResult.Cancel)
                     return;
 
-                string filename = Save.FileName;
                 switch (Save.FilterIndex)
                 {
-                    case 1: chart.SaveImage(filename, System.Drawing.Imaging.ImageFormat.Png);  break;
-                    case 2: chart.SaveImage(filename, System.Drawing.Imaging.ImageFormat.Jpeg); break;
-                    case 3: chart.SaveImage(filename, System.Drawing.Imaging.ImageFormat.Png); break;
+                    case 1: chart.SaveImage(Save.FileName, ChartImageFormat.Bmp); break;
+                    case 2: chart.SaveImage(Save.FileName, ChartImageFormat.Png); break;
+                    case 3: chart.SaveImage(Save.FileName, ChartImageFormat.Jpeg); break;
                 }
             };
 
@@ -48,45 +41,44 @@ namespace EasyGraph
 
             showValues.Click += (s, e) =>
             {
-                richTextBox3.Text = $"x = {string.Join(" ", x)}\n" +
+                TabControl.SelectedTab = PageOuput;
+                output.Text = $"x = {string.Join(" ", x)}\n" +
                     $"y = {string.Join(" ", y)}";
             };
 
             LanguageRussian.Click += (s, e) =>
             {
-                Languages.SetLanguage(LanguageRussian: ref LanguageRussian,
-                      LanguageEnglish: ref LanguageEnglish,
-                      "Russian");
+                Languages.SetLanguage("Russian");
                 Application.Restart();
                 Environment.Exit(0);
             };
 
             LanguageEnglish.Click += (s, e) =>
             {
-                Languages.SetLanguage(LanguageRussian: ref LanguageRussian,
-                      LanguageEnglish: ref LanguageEnglish,
-                      "English");
+                Languages.SetLanguage("English");
                 Application.Restart();
                 Environment.Exit(0);
             };
 
             KeyDown += (s, e) =>
             {
-                if (e.KeyCode == Keys.Enter && richTextBox1.Focused)
-                    richTextBox2.Focus();
-                else if (e.KeyCode == Keys.Enter && richTextBox2.Focused)
+                if (e.KeyCode == Keys.Enter && xInput.Focused)
+                    yInput.Focus();
+                else if (e.KeyCode == Keys.Enter && yInput.Focused)
                     Build_Click(Build, null);                    
             };
         }
 
         void SetNames()
         {
-            showValues.Text = Config.Show_values;
-            Options.Text = Config.Options;
-            Donation.Text = Config.Donation;
-            Language.Text = Config.LanguageMenuStrip;
-            Build.Text = Config.Build;
-            if (Config.Show_values == "Show values")
+            showValues.Text = Config.LanguageLocale[0];
+            Options.Text = Config.LanguageLocale[1];
+            Language.Text = Config.LanguageLocale[2];
+            Donation.Text = Config.LanguageLocale[3];
+            Build.Text = Config.LanguageLocale[4];
+            File.Text = Config.LanguageLocale[8];
+            SaveAs.Text = Config.LanguageLocale[9];
+            if (Config.LanguageLocale[0] == "Show values")
             {
                 LanguageRussian.Checked = false;
                 LanguageEnglish.Checked = true;
@@ -100,81 +92,86 @@ namespace EasyGraph
 
         private void Build_Click(object sender, EventArgs e)
         {
-            x.Clear();
-            y.Clear();
+            TabControl.SelectedTab = PageChart;
 
-            Invoke((MethodInvoker)(() =>
-            {
-                Utilities.isContinue = true;
-                if (richTextBox1.Text.Contains(":"))
-                    x = Utilities.Parser(richTextBox1.Text);
-                else if (richTextBox1.Text == "y")
-                    x = y;
-                else if (richTextBox1.Text.Contains("random"))
-                    x = Utilities.Random(richTextBox1.Text);
-                else
-                {
-                    foreach (string i in richTextBox1.Text.Split(new char[] { '\n', ' ' }))
-                        x.Add(double.Parse(i, System.Globalization.CultureInfo.InvariantCulture));
-                }
-
-                if (richTextBox2.Text.Contains(":"))
-                    y = Utilities.Parser(richTextBox2.Text);
-                else if (richTextBox2.Text == "x")
-                    y = x;
-                else if (richTextBox2.Text.Contains("random"))
-                    y = Utilities.Random(richTextBox2.Text);
-                else
-                {
-                    foreach (string i in richTextBox2.Text.Split(new char[] { '\n', ' ' }))
-                        y.Add(double.Parse(i, System.Globalization.CultureInfo.InvariantCulture));
-                }
-            }));
+            x = Utilities.CheckingXinput(xInputText: xInput.Text);
+            y = Utilities.CheckingYinput(yInputText: yInput.Text);
 
             if (Utilities.isContinue)
-                ToDisplayGraph(x, y);
+                PlotLine(x, y, nameLines: Config.nameLines);
         }
 
-        private void ToDisplayGraph(List<double> x, List<double> y)
+        private void PlotLine(List<double> x, List<string> y, List<string> nameLines)
         {
             double minX = -1, maxX = -1;
             double minY = -1, maxY = -1;
 
-            Invoke((MethodInvoker)(() =>
-            {
-                bool first = true;
-                for (int i = 0; i < (x.Count >= y.Count ? y.Count : x.Count); i++)
+            Parallel.Invoke(
+                () =>
                 {
-                    if (first)
+                    bool first = true;
+                    foreach (string y1 in y)
                     {
-                        first = false;
-                        minY = y[i];
-                        maxY = y[i];
-
-                        minX = x[i];
-                        maxX = x[i];
+                        List<string> yList = new List<string>();
+                        yList.AddRange(y1.Split(new char[] { ',' }));
+                        double buffer;
+                        foreach (string y2 in yList)
+                        {
+                            buffer = double.Parse(y2, System.Globalization.CultureInfo.InvariantCulture);
+                            if (first)
+                            {
+                                first = false;
+                                minY = buffer;
+                                maxY = buffer;
+                            }
+                            if (minY > buffer) minY = buffer;
+                            else if (maxY < buffer) maxY = buffer;
+                        }
                     }
-
-                    if (minY > y[i]) minY = y[i];
-                    else if (maxY < y[i]) maxY = y[i];
-
-                    if (minX > x[i]) minX = x[i];
-                    else if (maxX < x[i]) maxX = x[i];
-                }
-
-                chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY, isClear:true);
-                point.Clear();
-                chart.AddSeries(nameLine: Config.Line, borderWidth: 3, font: Config.font);
-
-                for (int i = 0; i < (x.Count >= y.Count ? y.Count : x.Count); i++)
+                },
+                () =>
                 {
-                    point.Add(new DataPoint(x[i], y[i]));
-                    chart.Series[Config.Line].Points.Add(point[i]);
+                    bool first = true;
+                    for (int i = 0; i < x.Count; i++)
+                    {
+                        if (first)
+                        {
+                            first = false;
+
+                            minX = x[i];
+                            maxX = x[i];
+                        }
+                        if (minX > x[i]) minX = x[i];
+                        else if (maxX < x[i]) maxX = x[i];
+                    }
+                });
+
+            point.Clear();
+            chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY);
+            chart.AddSeries(
+                nameLines: nameLines,
+                borderWidth: 3,
+                font: Config.font,
+                colors: Config.LineColor,
+                isClear: true);
+
+            int posPoint = 0;
+            for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
+            {
+                List<string> yList = new List<string>();
+                yList.AddRange(y[i1].Split(new char[] { ',' }));
+
+                for (int i2 = 0;
+                    i2 < (x.Count > yList.Count ? yList.Count : x.Count);
+                    i2++, posPoint++)
+                {
+                    point.Add(new DataPoint(x[posPoint],
+                              double.Parse(yList[i2], System.Globalization.CultureInfo.InvariantCulture)));
+                    chart.Series[nameLines[i1]].Points.Add(point[posPoint]);
                     chart.Update();
                 }
-                
-                chart.Series[Config.Line].ToolTip = "X = #VALX, Y = #VALY";
-            }));
+                chart.Series[nameLines[i1]].ToolTip = "X = #VALX, Y = #VALY";
+            }
         }
 
         private void Chart_MouseClick(object sender, MouseEventArgs e)
@@ -182,27 +179,34 @@ namespace EasyGraph
             var res = chart.HitTest(e.X, e.Y);
             if (res.Series != null)
             {
-                for(int i = 0; i < point.Count; i++)
+                for (int i = 0; i < point.Count; i++)
                 {
-                    if(point[i].XValue == res.Series.Points[res.PointIndex].XValue &&
+                    if (point[i].XValue == res.Series.Points[res.PointIndex].XValue &&
                         point[i].YValues[0] == res.Series.Points[res.PointIndex].YValues[0])
                     {
-                        chart.Series[Config.Line].Points[i].Label = "x=" + point[i].XValue + " y=" + point[i].YValues[0];
-                        chart.Series[Config.Line].Points[i].LabelBackColor = chart.BackColor;
+                        for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
+                        {
+                            chart.Series[Config.nameLines[i1]].Points[i].Label = "x=" + point[i].XValue + " y=" + point[i].YValues[0];
+                            chart.Series[Config.nameLines[i1]].Points[i].LabelBackColor = chart.BackColor;
 
-                        chart.Series[Config.Line].Points[i].MarkerColor = Color.Red;
-                        chart.Series[Config.Line].Points[i].MarkerStyle = MarkerStyle.Circle;
-                        chart.Series[Config.Line].Points[i].MarkerSize = 6;
-                        chart.Update();
+                            chart.Series[Config.nameLines[i1]].Points[i].MarkerColor = Color.Red;
+                            chart.Series[Config.nameLines[i1]].Points[i].MarkerStyle = MarkerStyle.Circle;
+                            chart.Series[Config.nameLines[i1]].Points[i].MarkerSize = 6;
+                            chart.Update();
+                        }
                     }
                 }
             }
+        }
 
+        private void PageEdit_Click(object sender, EventArgs e)
+        {
+            LineSel.Items.Clear();
+            LineSel.Items.AddRange(Config.nameLines.ToArray());
         }
     }
     public static class Graph
     {
-
         #region Method public Initialize
         public static void Initialize(this Chart chart,
                                       string title,
@@ -247,30 +251,39 @@ namespace EasyGraph
 
         #region Method public AddSeries
         public static void AddSeries(this Chart chart,
-                                      Font font = default,
-                                      string nameLine = "Line1",
-                                      ChartDashStyle chartDashStyle = ChartDashStyle.Solid,
+                                      List<string> nameLines,
+                                      List<Color> colors,
                                       int borderWidth = 5,
-                                      Color color = default,
+                                      bool isClear = false,
+                                      Font font = default,
+                                      ChartDashStyle chartDashStyle = ChartDashStyle.Solid,
                                       SeriesChartType chartType = SeriesChartType.Line)
         {
-            if (color.IsEmpty) color = Color.DarkBlue;
+            if (isClear)
+                chart.Series.Clear();
+            int nextColor = 0;
+            foreach (string nameLine in nameLines)
+            {
+                chart.Series.Add(nameLine);
+                chart.Series[nameLine].BorderDashStyle = chartDashStyle;
+                chart.Series[nameLine].BorderWidth = borderWidth;
+                chart.Series[nameLine].Color = colors[nextColor];
+                chart.Series[nameLine].Font = font;
+                chart.Series[nameLine].ChartType = chartType;
+                chart.Update();
+                if (nextColor == colors.Count) nextColor = 0;
+                nextColor++;
 
-            chart.Series.Add(nameLine);
-            chart.Series[nameLine].BorderDashStyle = chartDashStyle;
-            chart.Series[nameLine].BorderWidth = borderWidth;
-            chart.Series[nameLine].Color = color;
-            chart.Series[nameLine].Font = font;
-            chart.Series[nameLine].ChartType = chartType;
-            chart.Update();
+            }
         }
         #endregion
 
         #region Method AxisXY_Min_Max
-        public static void AxisXY_Min_Max(this Chart chart, string areasName, double minX, double maxX,
-                                          double minY, double maxY, bool isClear = false)
+        public static void AxisXY_Min_Max(this Chart chart, string areasName,
+                                          double minX, double maxX,
+                                          double minY, double maxY)
         {
-            if (isClear) chart.Series.Clear();
+            
             chart.ChartAreas[areasName].AxisX.Minimum = minX;
             chart.ChartAreas[areasName].AxisX.Maximum = maxX;
 

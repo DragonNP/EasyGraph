@@ -1,29 +1,33 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace EasyGraph
 {
     public static class Config
     {
+        public readonly static Random random = new Random();
+
         public static string PathRegistry { get; set; } = "Software\\EasyGraph";
 
         public static Font font = new Font("Arial", 12, FontStyle.Regular);
 
-        public static string Show_values { get; set; } = "Show values";
+        public static List<string> LanguageLocale = new List<string>();
 
-        public static string Options { get; set; } = "Options";
+        public static List<string> nameLines = new List<string>();
 
-        public static string LanguageMenuStrip { get; set; } = "Language";
-
-        public static string Donation { get; set; } = "Donation";
-
-        public static string Build { get; set; } = "Build";
-
-        public static string Graph { get; set; } = "Graph";
-
-        public static string Legend { get; set; } = "Legend";
-
-        public static string Line { get; set; } = "Line";
-
+        public static List<Color> LineColor = new List<Color>() {
+            Color.Black,
+            Color.Chocolate,
+            Color.Red,
+            Color.Blue,
+            Color.BurlyWood,
+            Color.Beige,
+            Color.Aqua,
+            Color.Beige,
+            Color.Brown,
+            Color.CadetBlue
+        };
     }
 
 }

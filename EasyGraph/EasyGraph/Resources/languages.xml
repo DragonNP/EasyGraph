@@ -9,6 +9,8 @@
 		<graph>Graph</graph>
 		<legend>Legend</legend>
 		<line>Line</line>
+    <file>File</file>
+    <save_as>Save chart as</save_as>
 	</language>
 	<language lang="Russian">
 		<show_values>Показать значения</show_values>
@@ -19,5 +21,7 @@
 		<graph>График</graph>
 		<legend>Легенда</legend>
 		<line>Линия</line>
+    <file>Файл</file>
+    <save_as>Сохранить график как</save_as>
 	</language>
 </languages>
