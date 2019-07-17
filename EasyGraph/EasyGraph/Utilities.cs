@@ -85,9 +85,7 @@ namespace EasyGraph
 
         public static List<double> CheckingXinput(string xInputText)
         {
-            List<double> xList = new List<double>();
-
-            xList = CheckingInputText(xInputText);
+            List<double> xList = CheckingInputText(xInputText);
             if (xList.Count == 0)
             {
                 if (xInputText.Contains("[") && xInputText.Contains("]"))
