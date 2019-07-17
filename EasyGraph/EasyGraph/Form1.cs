@@ -82,7 +82,8 @@ namespace EasyGraph
             {
                 if (a.KeyCode == Keys.Enter)
                 {
-                    chart.Series[LineSel.SelectedIndex].Color = StringToColor(ColorBox.Text);
+                    chart.Series[LineSel.SelectedIndex].Color = Utilities.StringToColor(ColorBox.Text);
+                    Config.LineColor[LineSel.SelectedIndex] = chart.Series[LineSel.SelectedIndex].Color;
                     int i = LineSel.SelectedIndex;
                     LineSel_DropDownClosed(LineSel, null);
                     LineSel.SelectedIndex = i;
@@ -230,12 +231,13 @@ namespace EasyGraph
                 }
             }
         }
+
         void LineSel_DropDownClosed(object sender, EventArgs e)
         {
             NameBox.Text = LineSel.SelectedItem.ToString();
             NameBox.Location = new Point(NameLabel.Location.X + NameLabel.Width + 3,
                     NameLabel.Location.Y);
-            ColorBox.Text = ColorArrayToStringArray()[LineSel.SelectedIndex];
+            ColorBox.Text = Utilities.ColorArrayToStringArray()[LineSel.SelectedIndex];
         }
 
         void TabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -247,26 +249,6 @@ namespace EasyGraph
                 LineSel.SelectedIndex = 0;
                 LineSel_DropDownClosed(sender, e);
             }
-        }
-
-        string[] ColorArrayToStringArray()
-        {
-            List<string> stringColor = new List<string>();
-            foreach (Color color in Config.LineColor)
-                stringColor.Add($"{color.R}, {color.G}, {color.B}");
-
-            return stringColor.ToArray();
-        }
-
-        Color StringToColor(string str)
-        {
-            str = str.Replace(" ", "");
-            int r, g, b;
-            string[] strArr = str.Split(',');
-            r = Convert.ToInt32(strArr[0]);
-            g = Convert.ToInt32(strArr[1]);
-            b = Convert.ToInt32(strArr[2]);
-            return Color.FromArgb(r, g, b);
         }
     }
     public static class Graph
