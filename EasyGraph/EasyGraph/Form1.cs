@@ -11,16 +11,18 @@ namespace EasyGraph
     {
         private List<double> x = new List<double>();
         private List<string> y = new List<string>();
-        private readonly List<DataPoint> point = new List<DataPoint>();
-  
+        private readonly List<List<DataPoint>> points = new List<List<DataPoint>>();
+
         public Form1()
         {
             InitializeComponent();
+
             Languages.ParsingLanguage();
             SetNames();
             chart.Initialize(title: Config.LanguageLocale[5], legendsTitle: Config.LanguageLocale[6], font: Config.font);
 
-           Save.Filter = "*.bmp|*.bmp;|*.png|*.png;|*.jpg|*.jpg";
+            #region File Save
+            Save.Filter = "*.bmp|*.bmp;|*.png|*.png;|*.jpg|*.jpg";
 
             SaveAs.Click += (s, e) =>
             {
@@ -35,8 +37,10 @@ namespace EasyGraph
                     case 3: chart.SaveImage(Save.FileName, ChartImageFormat.Jpeg); break;
                 }
             };
+            #endregion
 
-            Donation.Click += (s, e) => 
+            #region Click
+            Donation.Click += (s, e) =>
                 System.Diagnostics.Process.Start("https://money.yandex.ru/to/410016387696692");
 
             showValues.Click += (s, e) =>
@@ -59,14 +63,40 @@ namespace EasyGraph
                 Application.Restart();
                 Environment.Exit(0);
             };
+            #endregion
+
+            #region KeyDown
+            NameBox.KeyDown += (s, a) =>
+            {
+                if (a.KeyCode == Keys.Enter)
+                {
+                    chart.Series[LineSel.SelectedIndex].Name = NameBox.Text;
+                    Config.nameLines[LineSel.SelectedIndex] = NameBox.Text;
+                    int i = LineSel.SelectedIndex;
+                    LineSel_DropDownClosed(LineSel, null);
+                    LineSel.SelectedIndex = i;
+                }
+            };
+
+            ColorBox.KeyDown += (s, a) =>
+            {
+                if (a.KeyCode == Keys.Enter)
+                {
+                    chart.Series[LineSel.SelectedIndex].Color = StringToColor(ColorBox.Text);
+                    int i = LineSel.SelectedIndex;
+                    LineSel_DropDownClosed(LineSel, null);
+                    LineSel.SelectedIndex = i;
+                }
+            };
 
             KeyDown += (s, e) =>
             {
                 if (e.KeyCode == Keys.Enter && xInput.Focused)
                     yInput.Focus();
                 else if (e.KeyCode == Keys.Enter && yInput.Focused)
-                    Build_Click(Build, null);                    
+                    Build_Click(Build, null);
             };
+            #endregion
         }
 
         void SetNames()
@@ -90,7 +120,7 @@ namespace EasyGraph
             }
         }
 
-        private void Build_Click(object sender, EventArgs e)
+        void Build_Click(object sender, EventArgs e)
         {
             TabControl.SelectedTab = PageChart;
 
@@ -101,7 +131,7 @@ namespace EasyGraph
                 PlotLine(x, y, nameLines: Config.nameLines);
         }
 
-        private void PlotLine(List<double> x, List<string> y, List<string> nameLines)
+        void PlotLine(List<double> x, List<string> y, List<string> nameLines)
         {
             double minX = -1, maxX = -1;
             double minY = -1, maxY = -1;
@@ -146,7 +176,7 @@ namespace EasyGraph
                     }
                 });
 
-            point.Clear();
+            points.Clear();
             chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY);
             chart.AddSeries(
                 nameLines: nameLines,
@@ -160,33 +190,35 @@ namespace EasyGraph
             {
                 List<string> yList = new List<string>();
                 yList.AddRange(y[i1].Split(new char[] { ',' }));
+                points.Add(new List<DataPoint>());
 
                 for (int i2 = 0;
                     i2 < (x.Count > yList.Count ? yList.Count : x.Count);
                     i2++, posPoint++)
                 {
-                    point.Add(new DataPoint(x[posPoint],
+                    points[i1].Add(new DataPoint(x[posPoint],
                               double.Parse(yList[i2], System.Globalization.CultureInfo.InvariantCulture)));
-                    chart.Series[nameLines[i1]].Points.Add(point[posPoint]);
+                    chart.Series[nameLines[i1]].Points.Add(points[i1][i2]);
                     chart.Update();
                 }
                 chart.Series[nameLines[i1]].ToolTip = "X = #VALX, Y = #VALY";
             }
         }
 
-        private void Chart_MouseClick(object sender, MouseEventArgs e)
+        void Chart_MouseClick(object sender, MouseEventArgs e)
         {
-            var res = chart.HitTest(e.X, e.Y);
+            HitTestResult res = chart.HitTest(e.X, e.Y);
             if (res.Series != null)
             {
-                for (int i = 0; i < point.Count; i++)
+
+                for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
                 {
-                    if (point[i].XValue == res.Series.Points[res.PointIndex].XValue &&
-                        point[i].YValues[0] == res.Series.Points[res.PointIndex].YValues[0])
+                    for (int i = 0; i < points[i1].Count; i++)
                     {
-                        for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
+                        if (points[i1][i].XValue == res.Series.Points[res.PointIndex].XValue &&
+                            points[i1][i].YValues[0] == res.Series.Points[res.PointIndex].YValues[0])
                         {
-                            chart.Series[Config.nameLines[i1]].Points[i].Label = "x=" + point[i].XValue + " y=" + point[i].YValues[0];
+                            chart.Series[Config.nameLines[i1]].Points[i].Label = "x=" + points[i1][i].XValue + " y=" + points[i1][i].YValues[0];
                             chart.Series[Config.nameLines[i1]].Points[i].LabelBackColor = chart.BackColor;
 
                             chart.Series[Config.nameLines[i1]].Points[i].MarkerColor = Color.Red;
@@ -198,11 +230,43 @@ namespace EasyGraph
                 }
             }
         }
-
-        private void PageEdit_Click(object sender, EventArgs e)
+        void LineSel_DropDownClosed(object sender, EventArgs e)
         {
-            LineSel.Items.Clear();
-            LineSel.Items.AddRange(Config.nameLines.ToArray());
+            NameBox.Text = LineSel.SelectedItem.ToString();
+            NameBox.Location = new Point(NameLabel.Location.X + NameLabel.Width + 3,
+                    NameLabel.Location.Y);
+            ColorBox.Text = ColorArrayToStringArray()[LineSel.SelectedIndex];
+        }
+
+        void TabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (TabControl.SelectedIndex == 1)
+            {
+                LineSel.Items.Clear();
+                LineSel.Items.AddRange(Config.nameLines.ToArray());
+                LineSel.SelectedIndex = 0;
+                LineSel_DropDownClosed(sender, e);
+            }
+        }
+
+        string[] ColorArrayToStringArray()
+        {
+            List<string> stringColor = new List<string>();
+            foreach (Color color in Config.LineColor)
+                stringColor.Add($"{color.R}, {color.G}, {color.B}");
+
+            return stringColor.ToArray();
+        }
+
+        Color StringToColor(string str)
+        {
+            str = str.Replace(" ", "");
+            int r, g, b;
+            string[] strArr = str.Split(',');
+            r = Convert.ToInt32(strArr[0]);
+            g = Convert.ToInt32(strArr[1]);
+            b = Convert.ToInt32(strArr[2]);
+            return Color.FromArgb(r, g, b);
         }
     }
     public static class Graph
