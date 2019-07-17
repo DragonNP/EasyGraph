@@ -24,8 +24,7 @@ namespace EasyGraph
             }
         }
 
-        public static void SetLanguage(ref ToolStripMenuItem LanguageRussian,
-            ref ToolStripMenuItem LanguageEnglish, string language)
+        public static void SetLanguage(string language)
         {
             using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
             {
@@ -60,35 +59,43 @@ namespace EasyGraph
                     switch (childnode.Name)
                     {
                         case "show_values":
-                            Config.Show_values = childnode.InnerText;
+                            Config.LanguageLocale.Add(childnode.InnerText);
                             break;
 
                         case "options":
-                            Config.Options = childnode.InnerText;
+                            Config.LanguageLocale.Add(childnode.InnerText);
                             break;
 
                         case "languageMenuStrip":
-                            Config.LanguageMenuStrip = childnode.InnerText;
+                            Config.LanguageLocale.Add(childnode.InnerText);
                             break;
 
                         case "donation":
-                            Config.Donation = childnode.InnerText;
+                            Config.LanguageLocale.Add(childnode.InnerText);
                             break;
 
                         case "build":
-                            Config.Build = childnode.InnerText;
+                            Config.LanguageLocale.Add(childnode.InnerText);
                             break;
 
                         case "graph":
-                            Config.Graph = childnode.InnerText;
+                            Config.LanguageLocale.Add(childnode.InnerText);
                             break;
 
                         case "legend":
-                            Config.Legend = childnode.InnerText;
+                            Config.LanguageLocale.Add(childnode.InnerText);
                             break;
 
                         case "line":
-                            Config.Line = childnode.InnerText;
+                            Config.LanguageLocale.Add(childnode.InnerText);
+                            break;
+
+                        case "file":
+                            Config.LanguageLocale.Add(childnode.InnerText);
+                            break;
+
+                        case "save_as":
+                            Config.LanguageLocale.Add(childnode.InnerText);
                             break;
                     }
                 }
