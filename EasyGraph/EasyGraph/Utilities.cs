@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -82,7 +83,6 @@ namespace EasyGraph
             }
             return inputList;
         }
-
         public static List<double> CheckingXinput(string xInputText)
         {
             List<double> xList = CheckingInputText(xInputText);
@@ -106,9 +106,9 @@ namespace EasyGraph
         public static List<string> CheckingYinput(string yInputText)
         {
             List<string> yList = new List<string>();
-
-            if (CheckingInputText(yInputText).Count != 0)
-                yList.Add(string.Join(" ", CheckingInputText(yInputText)));
+            List<double> chekingList = CheckingInputText(yInputText);
+            if (chekingList.Count != 0)
+                yList.Add(string.Join(" ", chekingList));
             else if (yInputText.Contains("[") && yInputText.Contains("]"))
             {
                 int lineNumber = 0;
@@ -124,6 +124,25 @@ namespace EasyGraph
                 }
             }
             return yList;
+        }
+
+        public static string[] ColorArrayToStringArray()
+        {
+            List<string> stringColor = new List<string>();
+            foreach (Color color in Config.LineColor)
+                stringColor.Add($"{color.R}, {color.G}, {color.B}");
+
+            return stringColor.ToArray();
+        }
+        public static Color StringToColor(string str)
+        {
+            str = str.Replace(" ", "");
+            int r, g, b;
+            string[] strArr = str.Split(',');
+            r = Convert.ToInt32(strArr[0]);
+            g = Convert.ToInt32(strArr[1]);
+            b = Convert.ToInt32(strArr[2]);
+            return Color.FromArgb(r, g, b);
         }
     }
 }
