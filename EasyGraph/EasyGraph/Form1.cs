@@ -109,6 +109,14 @@ namespace EasyGraph
             Build.Text = Config.LanguageLocale[4];
             File.Text = Config.LanguageLocale[8];
             SaveAs.Text = Config.LanguageLocale[9];
+            PageChart.Text = Config.LanguageLocale[10];
+            PageEdit.Text = Config.LanguageLocale[11];
+            PageOuput.Text = Config.LanguageLocale[12];
+            PageLines.Text = Config.LanguageLocale[13];
+            PagePoints.Text = Config.LanguageLocale[14];
+            NameLabelLine.Text = Config.LanguageLocale[15];
+            ColorLabelLine.Text = Config.LanguageLocale[16];
+
             if (Config.LanguageLocale[0] == "Show values")
             {
                 LanguageRussian.Checked = false;
@@ -234,15 +242,17 @@ namespace EasyGraph
 
         void LineSel_DropDownClosed(object sender, EventArgs e)
         {
+            if (Config.nameLines.Count == 0) return;
+
             NameBox.Text = LineSel.SelectedItem.ToString();
-            NameBox.Location = new Point(NameLabel.Location.X + NameLabel.Width + 3,
-                    NameLabel.Location.Y);
+            NameBox.Location = new Point(NameLabelLine.Location.X + NameLabelLine.Width + 3,
+                    NameLabelLine.Location.Y);
             ColorBox.Text = Utilities.ColorArrayToStringArray()[LineSel.SelectedIndex];
         }
 
         void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (TabControl.SelectedIndex == 1)
+            if (TabControl.SelectedIndex == 1 && Config.nameLines.Count != 0)
             {
                 LineSel.Items.Clear();
                 LineSel.Items.AddRange(Config.nameLines.ToArray());

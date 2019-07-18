@@ -55,50 +55,7 @@ namespace EasyGraph
                 if (xnode.Attributes.GetNamedItem("lang").Value != lang)
                     continue;
                 foreach (XmlNode childnode in xnode.ChildNodes)
-                {
-                    switch (childnode.Name)
-                    {
-                        case "show_values":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "options":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "languageMenuStrip":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "donation":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "build":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "graph":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "legend":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "line":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "file":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-
-                        case "save_as":
-                            Config.LanguageLocale.Add(childnode.InnerText);
-                            break;
-                    }
-                }
+                    Config.LanguageLocale.Add(childnode.InnerText);
             }
         }
     }
