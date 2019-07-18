@@ -50,14 +50,14 @@
             this.PageLines = new System.Windows.Forms.TabPage();
             this.LineSel = new System.Windows.Forms.ComboBox();
             this.LineEdit = new System.Windows.Forms.Panel();
-            this.ColorLabel = new System.Windows.Forms.Label();
+            this.ColorBox = new System.Windows.Forms.TextBox();
+            this.ColorLabelLine = new System.Windows.Forms.Label();
             this.NameBox = new System.Windows.Forms.TextBox();
-            this.NameLabel = new System.Windows.Forms.Label();
+            this.NameLabelLine = new System.Windows.Forms.Label();
             this.PagePoints = new System.Windows.Forms.TabPage();
             this.PageChart = new System.Windows.Forms.TabPage();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.TabControl = new System.Windows.Forms.TabControl();
-            this.ColorBox = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.PageOuput.SuspendLayout();
             this.PageEdit.SuspendLayout();
@@ -79,7 +79,7 @@
             this.xInput.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
             this.xInput.Multiline = false;
             this.xInput.Name = "xInput";
-            this.xInput.Size = new System.Drawing.Size(300, 18);
+            this.xInput.Size = new System.Drawing.Size(540, 18);
             this.xInput.TabIndex = 1;
             this.xInput.Text = "[0,1,2,3,3,4,5,6,6,7,8,9,9,10,11,12,12,11,10,9,8,7,6,5,4,3,2,1,0]";
             // 
@@ -138,7 +138,7 @@
             this.yInput.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
             this.yInput.Multiline = false;
             this.yInput.Name = "yInput";
-            this.yInput.Size = new System.Drawing.Size(300, 18);
+            this.yInput.Size = new System.Drawing.Size(540, 18);
             this.yInput.TabIndex = 2;
             this.yInput.Text = "[0,1,2,3][3,4,5,6][6,5,4,3][3,2,1,0][0,0,0,0,0,0,0,0,0,0,0,0,0]";
             // 
@@ -167,8 +167,8 @@
             // SaveAs
             // 
             this.SaveAs.Name = "SaveAs";
-            this.SaveAs.Size = new System.Drawing.Size(168, 22);
-            this.SaveAs.Text = "Сохранаить как...";
+            this.SaveAs.Size = new System.Drawing.Size(208, 22);
+            this.SaveAs.Text = "Сохранаить график как...";
             // 
             // showValues
             // 
@@ -285,23 +285,32 @@
             // 
             this.LineEdit.BackColor = System.Drawing.SystemColors.ControlLight;
             this.LineEdit.Controls.Add(this.ColorBox);
-            this.LineEdit.Controls.Add(this.ColorLabel);
+            this.LineEdit.Controls.Add(this.ColorLabelLine);
             this.LineEdit.Controls.Add(this.NameBox);
-            this.LineEdit.Controls.Add(this.NameLabel);
+            this.LineEdit.Controls.Add(this.NameLabelLine);
             this.LineEdit.Location = new System.Drawing.Point(6, 38);
             this.LineEdit.Name = "LineEdit";
             this.LineEdit.Size = new System.Drawing.Size(519, 264);
             this.LineEdit.TabIndex = 1;
             // 
-            // ColorLabel
+            // ColorBox
             // 
-            this.ColorLabel.AutoSize = true;
-            this.ColorLabel.Location = new System.Drawing.Point(7, 32);
-            this.ColorLabel.Name = "ColorLabel";
-            this.ColorLabel.Size = new System.Drawing.Size(48, 18);
-            this.ColorLabel.TabIndex = 2;
-            this.ColorLabel.Text = "Цвет:";
-            this.ColorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ColorBox.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.ColorBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ColorBox.Location = new System.Drawing.Point(61, 32);
+            this.ColorBox.Name = "ColorBox";
+            this.ColorBox.Size = new System.Drawing.Size(100, 19);
+            this.ColorBox.TabIndex = 4;
+            // 
+            // ColorLabelLine
+            // 
+            this.ColorLabelLine.AutoSize = true;
+            this.ColorLabelLine.Location = new System.Drawing.Point(7, 32);
+            this.ColorLabelLine.Name = "ColorLabelLine";
+            this.ColorLabelLine.Size = new System.Drawing.Size(48, 18);
+            this.ColorLabelLine.TabIndex = 2;
+            this.ColorLabelLine.Text = "Цвет:";
+            this.ColorLabelLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // NameBox
             // 
@@ -312,15 +321,15 @@
             this.NameBox.Size = new System.Drawing.Size(100, 19);
             this.NameBox.TabIndex = 1;
             // 
-            // NameLabel
+            // NameLabelLine
             // 
-            this.NameLabel.AutoSize = true;
-            this.NameLabel.Location = new System.Drawing.Point(7, 7);
-            this.NameLabel.Name = "NameLabel";
-            this.NameLabel.Size = new System.Drawing.Size(82, 18);
-            this.NameLabel.TabIndex = 0;
-            this.NameLabel.Text = "Название:";
-            this.NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.NameLabelLine.AutoSize = true;
+            this.NameLabelLine.Location = new System.Drawing.Point(7, 7);
+            this.NameLabelLine.Name = "NameLabelLine";
+            this.NameLabelLine.Size = new System.Drawing.Size(82, 18);
+            this.NameLabelLine.TabIndex = 0;
+            this.NameLabelLine.Text = "Название:";
+            this.NameLabelLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // PagePoints
             // 
@@ -371,15 +380,6 @@
             this.TabControl.Size = new System.Drawing.Size(560, 383);
             this.TabControl.TabIndex = 5;
             this.TabControl.SelectedIndexChanged += new System.EventHandler(this.TabControl_SelectedIndexChanged);
-            // 
-            // ColorBox
-            // 
-            this.ColorBox.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ColorBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ColorBox.Location = new System.Drawing.Point(61, 32);
-            this.ColorBox.Name = "ColorBox";
-            this.ColorBox.Size = new System.Drawing.Size(100, 19);
-            this.ColorBox.TabIndex = 4;
             // 
             // Form1
             // 
@@ -445,9 +445,9 @@
         private System.Windows.Forms.TabPage PagePoints;
         private System.Windows.Forms.Panel LineEdit;
         private System.Windows.Forms.ComboBox LineSel;
-        private System.Windows.Forms.Label NameLabel;
+        private System.Windows.Forms.Label NameLabelLine;
         private System.Windows.Forms.TextBox NameBox;
-        private System.Windows.Forms.Label ColorLabel;
+        private System.Windows.Forms.Label ColorLabelLine;
         private System.Windows.Forms.TextBox ColorBox;
     }
 }

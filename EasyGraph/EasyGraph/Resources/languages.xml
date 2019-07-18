@@ -9,8 +9,15 @@
 		<graph>Graph</graph>
 		<legend>Legend</legend>
 		<line>Line</line>
-    <file>File</file>
-    <save_as>Save chart as</save_as>
+		<file>File</file>
+		<save_as>Save chart as</save_as>
+		<page_chart>Chart</page_chart>
+		<page_edit>Edit</page_edit>
+		<page_output>Output</page_output>
+		<page_lines>Lines</page_lines>
+		<page_points>Points</page_points>
+		<name_label_line>Name</name_label_line>
+		<color_label_line>Color</color_label_line>
 	</language>
 	<language lang="Russian">
 		<show_values>Показать значения</show_values>
@@ -21,7 +28,14 @@
 		<graph>График</graph>
 		<legend>Легенда</legend>
 		<line>Линия</line>
-    <file>Файл</file>
-    <save_as>Сохранить график как</save_as>
+		<file>Файл</file>
+		<save_as>Сохранить график как</save_as>
+		<page_chart>График</page_chart>
+		<page_edit>Редактировать</page_edit>
+		<page_output>Вывод</page_output>
+		<page_lines>Линии</page_lines>
+		<page_points>Точки</page_points>
+		<name_label_line>Название</name_label_line>
+		<color_label_line>Цвет</color_label_line>
 	</language>
 </languages>
