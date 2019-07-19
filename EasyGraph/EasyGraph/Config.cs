@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace EasyGraph
 {
     public static class Config
     {
-        public readonly static Random random = new Random();
-
         public static string PathRegistry { get; set; } = "Software\\EasyGraph";
 
         public static Font font = new Font("Arial", 12, FontStyle.Regular);

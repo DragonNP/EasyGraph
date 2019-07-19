@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using static EasyGraph.Logic;
 using static EasyGraph.Languages;
+using static EasyGraph.Logic;
 using static EasyGraph.Utilities;
-using System.Threading.Tasks;
 
 namespace EasyGraph
 {
@@ -19,8 +19,7 @@ namespace EasyGraph
         {
             InitializeComponent();
 
-            SetLanguage();
-            SetNames();
+            Config.LanguageLocale = GetLanguage(this, PathRegistry: Config.PathRegistry);
             chart.Initialize(title: Config.LanguageLocale[5], legendsTitle: Config.LanguageLocale[6], font: Config.font);
 
             Save.Filter = "*.bmp|*.bmp;|*.png|*.png;|*.jpg|*.jpg";
@@ -51,22 +50,17 @@ namespace EasyGraph
                     $"y = {string.Join(" ", y)}";
             };
 
-            LanguageRussian.Click += (s, e) =>
-            {
-                Languages.SetLanguage("Russian");
-            };
+            LanguageRussian.Click += (s, e) => SetLanguage("Russian", Config.PathRegistry);
 
-            LanguageEnglish.Click += (s, e) =>
-            {
-                Languages.SetLanguage("English");
-            };
+            LanguageEnglish.Click += (s, e) => SetLanguage("English", Config.PathRegistry);
 
             chart.MouseClick += (s, e) => chart.AddPoints(e);
 
             TabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
 
             LineSel.DropDownClosed += LineSel_DropDownClosed;
-            Build.Click += Build_Click;
+
+            Build.Click += (s, e) => Build_Chart(form1: this);
             #endregion
 
             #region KeyDown
@@ -101,64 +95,12 @@ namespace EasyGraph
                 if (e.KeyCode == Keys.Enter && xInput.Focused)
                     yInput.Focus();
                 else if (e.KeyCode == Keys.Enter && yInput.Focused)
-                    Build_Click(Build, null);
+                    Build_Chart(form1: this);
             };
             #endregion
         }
 
-        void SetNames()
-        {
-            showValues.Text = Config.LanguageLocale[0];
-            Options.Text = Config.LanguageLocale[1];
-            Language.Text = Config.LanguageLocale[2];
-            Donation.Text = Config.LanguageLocale[3];
-            Build.Text = Config.LanguageLocale[4];
-            File.Text = Config.LanguageLocale[8];
-            SaveAs.Text = Config.LanguageLocale[9];
-            PageChart.Text = Config.LanguageLocale[10];
-            PageEdit.Text = Config.LanguageLocale[11];
-            PageOuput.Text = Config.LanguageLocale[12];
-            NameLine.Text = Config.LanguageLocale[13];
-            ColorLine.Text = Config.LanguageLocale[14];
-            NamePoint.Text = Config.LanguageLocale[15];
-            ColorPoint.Text = Config.LanguageLocale[16];
-
-            NameLineBox.Location = new Point(NameLine.Location.X + NameLine.Width + 3,
-                NameLine.Location.Y);
-            ColorLineBox.Location = new Point(ColorLine.Location.X + ColorLine.Width + 3,
-                ColorLine.Location.Y);
-
-            NamePointBox.Location = new Point(NamePoint.Location.X + NamePoint.Width + 3,
-                NamePoint.Location.Y);
-            ColorPointBox.Location = new Point(ColorPoint.Location.X + ColorPoint.Width + 3,
-                ColorPoint.Location.Y);
-
-            if (Config.LanguageLocale[0] == "Show values")
-            {
-                LanguageRussian.Checked = false;
-                LanguageEnglish.Checked = true;
-            }
-            else
-            {
-                LanguageRussian.Checked = true;
-                LanguageEnglish.Checked = false;
-            }
-        }
-
         #region Events Methods
-        void Build_Click(object sender, EventArgs e)
-        {
-            List<double> x;
-            List<string> y;
-            Config.nameLines.Clear();
-            TabControl.SelectedTab = PageChart;
-
-            x = CheckingXinput(xInputText: xInput.Text);
-            y = CheckingYinput(yInputText: yInput.Text);
-
-            if (Utilities.isContinue)
-                chart.PlotLine(x, y, nameLines: Config.nameLines);
-        }
 
         void LineSel_DropDownClosed(object sender, EventArgs e)
         {
@@ -186,6 +128,7 @@ namespace EasyGraph
                 }
             });
         }
+
         #endregion
     }
 }

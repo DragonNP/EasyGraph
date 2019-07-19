@@ -46,11 +46,6 @@
             this.Save = new System.Windows.Forms.SaveFileDialog();
             this.PageOuput = new System.Windows.Forms.TabPage();
             this.PageEdit = new System.Windows.Forms.TabPage();
-            this.PageChart = new System.Windows.Forms.TabPage();
-            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.TabControl = new System.Windows.Forms.TabControl();
-            this.PointSel = new System.Windows.Forms.ComboBox();
-            this.LineSel = new System.Windows.Forms.ComboBox();
             this.PointEdit = new System.Windows.Forms.Panel();
             this.ColorPointBox = new System.Windows.Forms.TextBox();
             this.ColorPoint = new System.Windows.Forms.Label();
@@ -61,14 +56,19 @@
             this.ColorLine = new System.Windows.Forms.Label();
             this.NameLineBox = new System.Windows.Forms.TextBox();
             this.NameLine = new System.Windows.Forms.Label();
+            this.PointSel = new System.Windows.Forms.ComboBox();
+            this.LineSel = new System.Windows.Forms.ComboBox();
+            this.PageChart = new System.Windows.Forms.TabPage();
+            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.TabControl = new System.Windows.Forms.TabControl();
             this.menuStrip1.SuspendLayout();
             this.PageOuput.SuspendLayout();
             this.PageEdit.SuspendLayout();
+            this.PointEdit.SuspendLayout();
+            this.LineEdit.SuspendLayout();
             this.PageChart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.TabControl.SuspendLayout();
-            this.PointEdit.SuspendLayout();
-            this.LineEdit.SuspendLayout();
             this.SuspendLayout();
             // 
             // xInput
@@ -191,7 +191,7 @@
             this.LanguageEnglish,
             this.LanguageRussian});
             this.Language.Name = "Language";
-            this.Language.Size = new System.Drawing.Size(100, 22);
+            this.Language.Size = new System.Drawing.Size(180, 22);
             this.Language.Text = "Язык";
             // 
             // LanguageEnglish
@@ -250,66 +250,6 @@
             this.PageEdit.TabIndex = 1;
             this.PageEdit.Text = "Редактирование";
             this.PageEdit.UseVisualStyleBackColor = true;
-            // 
-            // PageChart
-            // 
-            this.PageChart.Controls.Add(this.chart);
-            this.PageChart.Location = new System.Drawing.Point(4, 27);
-            this.PageChart.Name = "PageChart";
-            this.PageChart.Padding = new System.Windows.Forms.Padding(3);
-            this.PageChart.Size = new System.Drawing.Size(552, 352);
-            this.PageChart.TabIndex = 0;
-            this.PageChart.Text = "График";
-            this.PageChart.UseVisualStyleBackColor = true;
-            // 
-            // chart
-            // 
-            this.chart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.chart.Location = new System.Drawing.Point(7, 7);
-            this.chart.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
-            this.chart.Name = "chart";
-            this.chart.Size = new System.Drawing.Size(538, 338);
-            this.chart.TabIndex = 5;
-            this.chart.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.SystemDefault;
-            // 
-            // TabControl
-            // 
-            this.TabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TabControl.Controls.Add(this.PageChart);
-            this.TabControl.Controls.Add(this.PageEdit);
-            this.TabControl.Controls.Add(this.PageOuput);
-            this.TabControl.Location = new System.Drawing.Point(12, 119);
-            this.TabControl.Multiline = true;
-            this.TabControl.Name = "TabControl";
-            this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(560, 383);
-            this.TabControl.TabIndex = 5;
-            // 
-            // PointSel
-            // 
-            this.PointSel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.PointSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.PointSel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.PointSel.FormattingEnabled = true;
-            this.PointSel.Location = new System.Drawing.Point(353, 6);
-            this.PointSel.Name = "PointSel";
-            this.PointSel.Size = new System.Drawing.Size(121, 26);
-            this.PointSel.TabIndex = 7;
-            // 
-            // LineSel
-            // 
-            this.LineSel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.LineSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.LineSel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LineSel.FormattingEnabled = true;
-            this.LineSel.Location = new System.Drawing.Point(78, 6);
-            this.LineSel.Name = "LineSel";
-            this.LineSel.Size = new System.Drawing.Size(121, 26);
-            this.LineSel.TabIndex = 6;
             // 
             // PointEdit
             // 
@@ -411,6 +351,66 @@
             this.NameLine.Text = "Название:";
             this.NameLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // PointSel
+            // 
+            this.PointSel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.PointSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.PointSel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PointSel.FormattingEnabled = true;
+            this.PointSel.Location = new System.Drawing.Point(353, 6);
+            this.PointSel.Name = "PointSel";
+            this.PointSel.Size = new System.Drawing.Size(121, 26);
+            this.PointSel.TabIndex = 7;
+            // 
+            // LineSel
+            // 
+            this.LineSel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.LineSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LineSel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LineSel.FormattingEnabled = true;
+            this.LineSel.Location = new System.Drawing.Point(78, 6);
+            this.LineSel.Name = "LineSel";
+            this.LineSel.Size = new System.Drawing.Size(121, 26);
+            this.LineSel.TabIndex = 6;
+            // 
+            // PageChart
+            // 
+            this.PageChart.Controls.Add(this.chart);
+            this.PageChart.Location = new System.Drawing.Point(4, 27);
+            this.PageChart.Name = "PageChart";
+            this.PageChart.Padding = new System.Windows.Forms.Padding(3);
+            this.PageChart.Size = new System.Drawing.Size(552, 352);
+            this.PageChart.TabIndex = 0;
+            this.PageChart.Text = "График";
+            this.PageChart.UseVisualStyleBackColor = true;
+            // 
+            // chart
+            // 
+            this.chart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chart.Location = new System.Drawing.Point(7, 7);
+            this.chart.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
+            this.chart.Name = "chart";
+            this.chart.Size = new System.Drawing.Size(538, 338);
+            this.chart.TabIndex = 5;
+            this.chart.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.SystemDefault;
+            // 
+            // TabControl
+            // 
+            this.TabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TabControl.Controls.Add(this.PageChart);
+            this.TabControl.Controls.Add(this.PageEdit);
+            this.TabControl.Controls.Add(this.PageOuput);
+            this.TabControl.Location = new System.Drawing.Point(12, 119);
+            this.TabControl.Multiline = true;
+            this.TabControl.Name = "TabControl";
+            this.TabControl.SelectedIndex = 0;
+            this.TabControl.Size = new System.Drawing.Size(560, 383);
+            this.TabControl.TabIndex = 5;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -436,52 +436,52 @@
             this.menuStrip1.PerformLayout();
             this.PageOuput.ResumeLayout(false);
             this.PageEdit.ResumeLayout(false);
-            this.PageChart.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
-            this.TabControl.ResumeLayout(false);
             this.PointEdit.ResumeLayout(false);
             this.PointEdit.PerformLayout();
             this.LineEdit.ResumeLayout(false);
             this.LineEdit.PerformLayout();
+            this.PageChart.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
+            this.TabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.RichTextBox xInput;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RichTextBox yInput;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem showValues;
-        private System.Windows.Forms.RichTextBox output;
-        private System.Windows.Forms.ToolStripMenuItem Options;
-        private System.Windows.Forms.ToolStripMenuItem Language;
-        private System.Windows.Forms.ToolStripMenuItem Donation;
         public System.Windows.Forms.ToolStripMenuItem LanguageRussian;
         public System.Windows.Forms.ToolStripMenuItem LanguageEnglish;
-        private System.Windows.Forms.ToolStripMenuItem File;
-        private System.Windows.Forms.ToolStripMenuItem SaveAs;
         private System.Windows.Forms.SaveFileDialog Save;
-        private System.Windows.Forms.TabPage PageOuput;
-        private System.Windows.Forms.TabPage PageEdit;
-        private System.Windows.Forms.TabPage PageChart;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
-        private System.Windows.Forms.TabControl TabControl;
         public System.Windows.Forms.Button Build;
-        private System.Windows.Forms.Panel PointEdit;
-        private System.Windows.Forms.TextBox ColorPointBox;
-        private System.Windows.Forms.Label ColorPoint;
-        private System.Windows.Forms.TextBox NamePointBox;
-        private System.Windows.Forms.Label NamePoint;
-        private System.Windows.Forms.Panel LineEdit;
-        private System.Windows.Forms.TextBox ColorLineBox;
-        private System.Windows.Forms.Label ColorLine;
-        private System.Windows.Forms.TextBox NameLineBox;
-        private System.Windows.Forms.Label NameLine;
-        private System.Windows.Forms.ComboBox PointSel;
-        private System.Windows.Forms.ComboBox LineSel;
+        public System.Windows.Forms.TabControl TabControl;
+        public System.Windows.Forms.TabPage PageChart;
+        public System.Windows.Forms.RichTextBox xInput;
+        public System.Windows.Forms.RichTextBox yInput;
+        public System.Windows.Forms.DataVisualization.Charting.Chart chart;
+        public System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Label label2;
+        public System.Windows.Forms.ToolStripMenuItem showValues;
+        public System.Windows.Forms.RichTextBox output;
+        public System.Windows.Forms.ToolStripMenuItem Options;
+        public System.Windows.Forms.ToolStripMenuItem Language;
+        public System.Windows.Forms.ToolStripMenuItem Donation;
+        public System.Windows.Forms.ToolStripMenuItem File;
+        public System.Windows.Forms.ToolStripMenuItem SaveAs;
+        public System.Windows.Forms.TabPage PageOuput;
+        public System.Windows.Forms.TabPage PageEdit;
+        public System.Windows.Forms.Panel PointEdit;
+        public System.Windows.Forms.TextBox ColorPointBox;
+        public System.Windows.Forms.Label ColorPoint;
+        public System.Windows.Forms.TextBox NamePointBox;
+        public System.Windows.Forms.Label NamePoint;
+        public System.Windows.Forms.Panel LineEdit;
+        public System.Windows.Forms.TextBox ColorLineBox;
+        public System.Windows.Forms.Label ColorLine;
+        public System.Windows.Forms.TextBox NameLineBox;
+        public System.Windows.Forms.Label NameLine;
+        public System.Windows.Forms.ComboBox PointSel;
+        public System.Windows.Forms.ComboBox LineSel;
     }
 }
 
