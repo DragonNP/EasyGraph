@@ -1,28 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using static EasyGraph.Logic;
+using static EasyGraph.Languages;
+using static EasyGraph.Utilities;
+using System.Threading.Tasks;
 
 namespace EasyGraph
 {
     public partial class Form1 : Form
     {
-        private List<double> x = new List<double>();
-        private List<string> y = new List<string>();
-        private readonly List<List<DataPoint>> points = new List<List<DataPoint>>();
+        private readonly List<double> x = new List<double>();
+        private readonly List<string> y = new List<string>();
 
         public Form1()
         {
             InitializeComponent();
 
-            Languages.ParsingLanguage();
+            SetLanguage();
             SetNames();
             chart.Initialize(title: Config.LanguageLocale[5], legendsTitle: Config.LanguageLocale[6], font: Config.font);
 
-            #region File Save
             Save.Filter = "*.bmp|*.bmp;|*.png|*.png;|*.jpg|*.jpg";
+
+            #region Events
 
             SaveAs.Click += (s, e) =>
             {
@@ -37,9 +40,7 @@ namespace EasyGraph
                     case 3: chart.SaveImage(Save.FileName, ChartImageFormat.Jpeg); break;
                 }
             };
-            #endregion
 
-            #region Click
             Donation.Click += (s, e) =>
                 System.Diagnostics.Process.Start("https://money.yandex.ru/to/410016387696692");
 
@@ -53,38 +54,43 @@ namespace EasyGraph
             LanguageRussian.Click += (s, e) =>
             {
                 Languages.SetLanguage("Russian");
-                Application.Restart();
-                Environment.Exit(0);
             };
 
             LanguageEnglish.Click += (s, e) =>
             {
                 Languages.SetLanguage("English");
-                Application.Restart();
-                Environment.Exit(0);
             };
+
+            chart.MouseClick += (s, e) => chart.AddPoints(e);
+
+            TabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
+
+            LineSel.DropDownClosed += LineSel_DropDownClosed;
+            Build.Click += Build_Click;
             #endregion
 
             #region KeyDown
-            NameBox.KeyDown += (s, a) =>
+            NameLineBox.KeyDown += (s, a) =>
             {
                 if (a.KeyCode == Keys.Enter)
                 {
-                    chart.Series[LineSel.SelectedIndex].Name = NameBox.Text;
-                    Config.nameLines[LineSel.SelectedIndex] = NameBox.Text;
+                    chart.Series[LineSel.SelectedIndex].Name = NameLineBox.Text;
+                    Config.nameLines[LineSel.SelectedIndex] = NameLineBox.Text;
                     int i = LineSel.SelectedIndex;
+                    TabControl_SelectedIndexChanged(TabControl, null);
                     LineSel_DropDownClosed(LineSel, null);
                     LineSel.SelectedIndex = i;
                 }
             };
 
-            ColorBox.KeyDown += (s, a) =>
+            ColorLineBox.KeyDown += (s, a) =>
             {
                 if (a.KeyCode == Keys.Enter)
                 {
-                    chart.Series[LineSel.SelectedIndex].Color = Utilities.StringToColor(ColorBox.Text);
+                    chart.Series[LineSel.SelectedIndex].Color = Utilities.StringToColor(ColorLineBox.Text);
                     Config.LineColor[LineSel.SelectedIndex] = chart.Series[LineSel.SelectedIndex].Color;
                     int i = LineSel.SelectedIndex;
+                    TabControl_SelectedIndexChanged(TabControl, null);
                     LineSel_DropDownClosed(LineSel, null);
                     LineSel.SelectedIndex = i;
                 }
@@ -112,10 +118,20 @@ namespace EasyGraph
             PageChart.Text = Config.LanguageLocale[10];
             PageEdit.Text = Config.LanguageLocale[11];
             PageOuput.Text = Config.LanguageLocale[12];
-            PageLines.Text = Config.LanguageLocale[13];
-            PagePoints.Text = Config.LanguageLocale[14];
-            NameLabelLine.Text = Config.LanguageLocale[15];
-            ColorLabelLine.Text = Config.LanguageLocale[16];
+            NameLine.Text = Config.LanguageLocale[13];
+            ColorLine.Text = Config.LanguageLocale[14];
+            NamePoint.Text = Config.LanguageLocale[15];
+            ColorPoint.Text = Config.LanguageLocale[16];
+
+            NameLineBox.Location = new Point(NameLine.Location.X + NameLine.Width + 3,
+                NameLine.Location.Y);
+            ColorLineBox.Location = new Point(ColorLine.Location.X + ColorLine.Width + 3,
+                ColorLine.Location.Y);
+
+            NamePointBox.Location = new Point(NamePoint.Location.X + NamePoint.Width + 3,
+                NamePoint.Location.Y);
+            ColorPointBox.Location = new Point(ColorPoint.Location.X + ColorPoint.Width + 3,
+                ColorPoint.Location.Y);
 
             if (Config.LanguageLocale[0] == "Show values")
             {
@@ -129,222 +145,46 @@ namespace EasyGraph
             }
         }
 
+        #region Events Methods
         void Build_Click(object sender, EventArgs e)
         {
+            List<double> x;
+            List<string> y;
+            Config.nameLines.Clear();
             TabControl.SelectedTab = PageChart;
 
-            x = Utilities.CheckingXinput(xInputText: xInput.Text);
-            y = Utilities.CheckingYinput(yInputText: yInput.Text);
+            x = CheckingXinput(xInputText: xInput.Text);
+            y = CheckingYinput(yInputText: yInput.Text);
 
             if (Utilities.isContinue)
-                PlotLine(x, y, nameLines: Config.nameLines);
-        }
-
-        void PlotLine(List<double> x, List<string> y, List<string> nameLines)
-        {
-            double minX = -1, maxX = -1;
-            double minY = -1, maxY = -1;
-
-            Parallel.Invoke(
-                () =>
-                {
-                    bool first = true;
-                    foreach (string y1 in y)
-                    {
-                        List<string> yList = new List<string>();
-                        yList.AddRange(y1.Split(new char[] { ',' }));
-                        double buffer;
-                        foreach (string y2 in yList)
-                        {
-                            buffer = double.Parse(y2, System.Globalization.CultureInfo.InvariantCulture);
-                            if (first)
-                            {
-                                first = false;
-                                minY = buffer;
-                                maxY = buffer;
-                            }
-                            if (minY > buffer) minY = buffer;
-                            else if (maxY < buffer) maxY = buffer;
-                        }
-                    }
-                },
-                () =>
-                {
-                    bool first = true;
-                    for (int i = 0; i < x.Count; i++)
-                    {
-                        if (first)
-                        {
-                            first = false;
-
-                            minX = x[i];
-                            maxX = x[i];
-                        }
-                        if (minX > x[i]) minX = x[i];
-                        else if (maxX < x[i]) maxX = x[i];
-                    }
-                });
-
-            points.Clear();
-            chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY);
-            chart.AddSeries(
-                nameLines: nameLines,
-                borderWidth: 3,
-                font: Config.font,
-                colors: Config.LineColor,
-                isClear: true);
-
-            int posPoint = 0;
-            for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
-            {
-                List<string> yList = new List<string>();
-                yList.AddRange(y[i1].Split(new char[] { ',' }));
-                points.Add(new List<DataPoint>());
-
-                for (int i2 = 0;
-                    i2 < (x.Count > yList.Count ? yList.Count : x.Count);
-                    i2++, posPoint++)
-                {
-                    points[i1].Add(new DataPoint(x[posPoint],
-                              double.Parse(yList[i2], System.Globalization.CultureInfo.InvariantCulture)));
-                    chart.Series[nameLines[i1]].Points.Add(points[i1][i2]);
-                    chart.Update();
-                }
-                chart.Series[nameLines[i1]].ToolTip = "X = #VALX, Y = #VALY";
-            }
-        }
-
-        void Chart_MouseClick(object sender, MouseEventArgs e)
-        {
-            HitTestResult res = chart.HitTest(e.X, e.Y);
-            if (res.Series != null)
-            {
-
-                for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
-                {
-                    for (int i = 0; i < points[i1].Count; i++)
-                    {
-                        if (points[i1][i].XValue == res.Series.Points[res.PointIndex].XValue &&
-                            points[i1][i].YValues[0] == res.Series.Points[res.PointIndex].YValues[0])
-                        {
-                            chart.Series[Config.nameLines[i1]].Points[i].Label = "x=" + points[i1][i].XValue + " y=" + points[i1][i].YValues[0];
-                            chart.Series[Config.nameLines[i1]].Points[i].LabelBackColor = chart.BackColor;
-
-                            chart.Series[Config.nameLines[i1]].Points[i].MarkerColor = Color.Red;
-                            chart.Series[Config.nameLines[i1]].Points[i].MarkerStyle = MarkerStyle.Circle;
-                            chart.Series[Config.nameLines[i1]].Points[i].MarkerSize = 6;
-                            chart.Update();
-                        }
-                    }
-                }
-            }
+                chart.PlotLine(x, y, nameLines: Config.nameLines);
         }
 
         void LineSel_DropDownClosed(object sender, EventArgs e)
         {
             if (Config.nameLines.Count == 0) return;
 
-            NameBox.Text = LineSel.SelectedItem.ToString();
-            NameBox.Location = new Point(NameLabelLine.Location.X + NameLabelLine.Width + 3,
-                    NameLabelLine.Location.Y);
-            ColorBox.Text = Utilities.ColorArrayToStringArray()[LineSel.SelectedIndex];
+            NameLineBox.Text = LineSel.SelectedItem.ToString();
+            ColorLineBox.Text = ColorArrayToStringArray()[LineSel.SelectedIndex];
+            LineSel.Update();
         }
 
-        void TabControl_SelectedIndexChanged(object sender, EventArgs e)
+        async void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (TabControl.SelectedIndex == 1 && Config.nameLines.Count != 0)
+            await Task.Run(() =>
             {
-                LineSel.Items.Clear();
-                LineSel.Items.AddRange(Config.nameLines.ToArray());
-                LineSel.SelectedIndex = 0;
-                LineSel_DropDownClosed(sender, e);
-            }
-        }
-    }
-    public static class Graph
-    {
-        #region Method public Initialize
-        public static void Initialize(this Chart chart,
-                                      string title,
-                                      string legendsTitle,
-                                      Font font,
-                                      string axisXTitle = "X",
-                                      string axisYTitle = "Y",
-                                      string areasName = "area",
-                                      Color color = default,
-                                      AxisArrowStyle axisArrowStyle = AxisArrowStyle.Triangle)
-        {
-            if (color.IsEmpty) color = Color.Black;
+                if (TabControl.SelectedIndex == 1 && Config.nameLines.Count != 0 && Points.Count != 0)
+                {
+                    PointSel.Items.Clear();
+                    foreach (List<DataPoint> pointsList in Points)
+                        PointSel.Items.AddRange(pointsList.ToArray());
 
-            chart.Titles.Add(title).Font = font;
-
-            chart.Legends.Add(legendsTitle);
-            chart.Legends[legendsTitle].Title = legendsTitle;
-            chart.Legends[legendsTitle].TitleFont = font;
-
-            chart.ChartAreas.Add(areasName);
-            chart.ChartAreas[areasName].AxisX.Title = axisXTitle;
-            chart.ChartAreas[areasName].AxisX.ArrowStyle = axisArrowStyle;
-            chart.ChartAreas[areasName].AxisX.TitleFont = font;
-            chart.ChartAreas[areasName].AxisX.TitleForeColor = color;
-
-            chart.ChartAreas[areasName].AxisX2.Title = axisXTitle;
-            chart.ChartAreas[areasName].AxisX2.ArrowStyle = axisArrowStyle;
-            chart.ChartAreas[areasName].AxisX2.TitleFont = font;
-            chart.ChartAreas[areasName].AxisX2.TitleForeColor = color;
-
-            chart.ChartAreas[areasName].AxisY.Title = axisYTitle;
-            chart.ChartAreas[areasName].AxisY.ArrowStyle = axisArrowStyle;
-            chart.ChartAreas[areasName].AxisY.TitleFont = font;
-            chart.ChartAreas[areasName].AxisY.TitleForeColor = color;
-
-            chart.ChartAreas[areasName].AxisY2.Title = axisYTitle;
-            chart.ChartAreas[areasName].AxisY2.ArrowStyle = axisArrowStyle;
-            chart.ChartAreas[areasName].AxisY2.TitleFont = font;
-            chart.ChartAreas[areasName].AxisY2.TitleForeColor = color;
-        }
-        #endregion
-
-        #region Method public AddSeries
-        public static void AddSeries(this Chart chart,
-                                      List<string> nameLines,
-                                      List<Color> colors,
-                                      int borderWidth = 5,
-                                      bool isClear = false,
-                                      Font font = default,
-                                      ChartDashStyle chartDashStyle = ChartDashStyle.Solid,
-                                      SeriesChartType chartType = SeriesChartType.Line)
-        {
-            if (isClear)
-                chart.Series.Clear();
-            int nextColor = 0;
-            foreach (string nameLine in nameLines)
-            {
-                chart.Series.Add(nameLine);
-                chart.Series[nameLine].BorderDashStyle = chartDashStyle;
-                chart.Series[nameLine].BorderWidth = borderWidth;
-                chart.Series[nameLine].Color = colors[nextColor];
-                chart.Series[nameLine].Font = font;
-                chart.Series[nameLine].ChartType = chartType;
-                chart.Update();
-                if (nextColor == colors.Count) nextColor = 0;
-                nextColor++;
-
-            }
-        }
-        #endregion
-
-        #region Method AxisXY_Min_Max
-        public static void AxisXY_Min_Max(this Chart chart, string areasName,
-                                          double minX, double maxX,
-                                          double minY, double maxY)
-        {
-            
-            chart.ChartAreas[areasName].AxisX.Minimum = minX;
-            chart.ChartAreas[areasName].AxisX.Maximum = maxX;
-
-            chart.ChartAreas[areasName].AxisY.Minimum = minY;
-            chart.ChartAreas[areasName].AxisY.Maximum = maxY;
+                    LineSel.Items.Clear();
+                    LineSel.Items.AddRange(Config.nameLines.ToArray());
+                    LineSel.SelectedIndex = 0;
+                    LineSel_DropDownClosed(LineSel, e);
+                }
+            });
         }
         #endregion
     }

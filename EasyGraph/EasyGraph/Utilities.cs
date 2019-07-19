@@ -8,7 +8,6 @@ namespace EasyGraph
 {
     class Utilities
     {
-
         public static bool isContinue = true;
 
         public static List<double> Random(string text, Random random)
@@ -83,6 +82,7 @@ namespace EasyGraph
             }
             return inputList;
         }
+
         public static List<double> CheckingXinput(string xInputText)
         {
             List<double> xList = CheckingInputText(xInputText);
@@ -103,6 +103,7 @@ namespace EasyGraph
             else
                 return xList;
         }
+
         public static List<string> CheckingYinput(string yInputText)
         {
             List<string> yList = new List<string>();
@@ -134,6 +135,7 @@ namespace EasyGraph
 
             return stringColor.ToArray();
         }
+
         public static Color StringToColor(string str)
         {
             str = str.Replace(" ", "");

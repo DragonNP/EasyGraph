@@ -14,10 +14,10 @@
 		<page_chart>Chart</page_chart>
 		<page_edit>Edit</page_edit>
 		<page_output>Output</page_output>
-		<page_lines>Lines</page_lines>
-		<page_points>Points</page_points>
-		<name_label_line>Name</name_label_line>
-		<color_label_line>Color</color_label_line>
+		<name_label_line>Name:</name_label_line>
+		<color_label_line>Color:</color_label_line>
+    <name_label_point>Name:</name_label_point>
+    <color_label_point>Color:</color_label_point>
 	</language>
 	<language lang="Russian">
 		<show_values>Показать значения</show_values>
@@ -33,9 +33,9 @@
 		<page_chart>График</page_chart>
 		<page_edit>Редактировать</page_edit>
 		<page_output>Вывод</page_output>
-		<page_lines>Линии</page_lines>
-		<page_points>Точки</page_points>
-		<name_label_line>Название</name_label_line>
-		<color_label_line>Цвет</color_label_line>
+		<name_label_line>Название:</name_label_line>
+		<color_label_line>Цвет:</color_label_line>
+    <name_label_point>Название:</name_label_point>
+    <color_label_point>Цвет:</color_label_point>
 	</language>
 </languages>

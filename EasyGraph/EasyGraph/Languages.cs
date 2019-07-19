@@ -1,6 +1,8 @@
 ﻿using EasyGraph.Properties;
 using Microsoft.Win32;
+using System;
 using System.Resources;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -8,40 +10,30 @@ namespace EasyGraph
 {
     public static class Languages
     {
-        private static string ReadLanguage()
+
+        async public static void SetLanguage(string language)
         {
-            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
+            await Task.Run(() =>
             {
-                string language;
-                if (key.GetValue("Language", null) != null)
-                    language = key.GetValue("Language").ToString();
-                else
+                using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
                 {
-                    key.SetValue("Language", "English");
-                    language = key.GetValue("Language").ToString();
+                    switch (language)
+                    {
+                        case "Russian":
+                            key.SetValue("Language", "Russian");
+                            break;
+
+                        case "English":
+                            key.SetValue("Language", "English");
+                            break;
+                    }
                 }
-                return language;
-            }
+            });
+            Application.Restart();
+            Environment.Exit(0);
         }
 
-        public static void SetLanguage(string language)
-        {
-            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
-            {
-                switch (language)
-                {
-                    case "Russian":
-                        key.SetValue("Language", "Russian");
-                        break;
-
-                    case "English":
-                        key.SetValue("Language", "English");
-                        break;
-                }
-            }
-        }
-
-        public static void ParsingLanguage()
+        public static void SetLanguage()
         {
             string lang = ReadLanguage();
             ResourceManager RM = new ResourceManager("EasyGraph.Properties.Resources", typeof(Resources).Assembly);
@@ -56,6 +48,22 @@ namespace EasyGraph
                     continue;
                 foreach (XmlNode childnode in xnode.ChildNodes)
                     Config.LanguageLocale.Add(childnode.InnerText);
+            }
+        }
+
+        private static string ReadLanguage()
+        {
+            using (RegistryKey key = Registry.CurrentUser.CreateSubKey(Config.PathRegistry))
+            {
+                string language;
+                if (key.GetValue("Language", null) != null)
+                    language = key.GetValue("Language").ToString();
+                else
+                {
+                    key.SetValue("Language", "English");
+                    language = key.GetValue("Language").ToString();
+                }
+                return language;
             }
         }
     }

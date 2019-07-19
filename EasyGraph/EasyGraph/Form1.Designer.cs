@@ -46,27 +46,29 @@
             this.Save = new System.Windows.Forms.SaveFileDialog();
             this.PageOuput = new System.Windows.Forms.TabPage();
             this.PageEdit = new System.Windows.Forms.TabPage();
-            this.EditControl = new System.Windows.Forms.TabControl();
-            this.PageLines = new System.Windows.Forms.TabPage();
-            this.LineSel = new System.Windows.Forms.ComboBox();
-            this.LineEdit = new System.Windows.Forms.Panel();
-            this.ColorBox = new System.Windows.Forms.TextBox();
-            this.ColorLabelLine = new System.Windows.Forms.Label();
-            this.NameBox = new System.Windows.Forms.TextBox();
-            this.NameLabelLine = new System.Windows.Forms.Label();
-            this.PagePoints = new System.Windows.Forms.TabPage();
             this.PageChart = new System.Windows.Forms.TabPage();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.TabControl = new System.Windows.Forms.TabControl();
+            this.PointSel = new System.Windows.Forms.ComboBox();
+            this.LineSel = new System.Windows.Forms.ComboBox();
+            this.PointEdit = new System.Windows.Forms.Panel();
+            this.ColorPointBox = new System.Windows.Forms.TextBox();
+            this.ColorPoint = new System.Windows.Forms.Label();
+            this.NamePointBox = new System.Windows.Forms.TextBox();
+            this.NamePoint = new System.Windows.Forms.Label();
+            this.LineEdit = new System.Windows.Forms.Panel();
+            this.ColorLineBox = new System.Windows.Forms.TextBox();
+            this.ColorLine = new System.Windows.Forms.Label();
+            this.NameLineBox = new System.Windows.Forms.TextBox();
+            this.NameLine = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.PageOuput.SuspendLayout();
             this.PageEdit.SuspendLayout();
-            this.EditControl.SuspendLayout();
-            this.PageLines.SuspendLayout();
-            this.LineEdit.SuspendLayout();
             this.PageChart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.TabControl.SuspendLayout();
+            this.PointEdit.SuspendLayout();
+            this.LineEdit.SuspendLayout();
             this.SuspendLayout();
             // 
             // xInput
@@ -98,7 +100,6 @@
             this.Build.TabIndex = 3;
             this.Build.Text = "Построить";
             this.Build.UseVisualStyleBackColor = false;
-            this.Build.Click += new System.EventHandler(this.Build_Click);
             // 
             // label1
             // 
@@ -238,7 +239,10 @@
             // 
             // PageEdit
             // 
-            this.PageEdit.Controls.Add(this.EditControl);
+            this.PageEdit.Controls.Add(this.PointEdit);
+            this.PageEdit.Controls.Add(this.LineEdit);
+            this.PageEdit.Controls.Add(this.PointSel);
+            this.PageEdit.Controls.Add(this.LineSel);
             this.PageEdit.Location = new System.Drawing.Point(4, 27);
             this.PageEdit.Name = "PageEdit";
             this.PageEdit.Padding = new System.Windows.Forms.Padding(3);
@@ -246,100 +250,6 @@
             this.PageEdit.TabIndex = 1;
             this.PageEdit.Text = "Редактирование";
             this.PageEdit.UseVisualStyleBackColor = true;
-            // 
-            // EditControl
-            // 
-            this.EditControl.Controls.Add(this.PageLines);
-            this.EditControl.Controls.Add(this.PagePoints);
-            this.EditControl.Location = new System.Drawing.Point(7, 7);
-            this.EditControl.Name = "EditControl";
-            this.EditControl.SelectedIndex = 0;
-            this.EditControl.Size = new System.Drawing.Size(539, 339);
-            this.EditControl.TabIndex = 0;
-            // 
-            // PageLines
-            // 
-            this.PageLines.Controls.Add(this.LineSel);
-            this.PageLines.Controls.Add(this.LineEdit);
-            this.PageLines.Location = new System.Drawing.Point(4, 27);
-            this.PageLines.Name = "PageLines";
-            this.PageLines.Padding = new System.Windows.Forms.Padding(3);
-            this.PageLines.Size = new System.Drawing.Size(531, 308);
-            this.PageLines.TabIndex = 0;
-            this.PageLines.Text = "Линии";
-            this.PageLines.UseVisualStyleBackColor = true;
-            // 
-            // LineSel
-            // 
-            this.LineSel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.LineSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.LineSel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LineSel.FormattingEnabled = true;
-            this.LineSel.Location = new System.Drawing.Point(6, 6);
-            this.LineSel.Name = "LineSel";
-            this.LineSel.Size = new System.Drawing.Size(121, 26);
-            this.LineSel.TabIndex = 2;
-            this.LineSel.DropDownClosed += new System.EventHandler(this.LineSel_DropDownClosed);
-            // 
-            // LineEdit
-            // 
-            this.LineEdit.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.LineEdit.Controls.Add(this.ColorBox);
-            this.LineEdit.Controls.Add(this.ColorLabelLine);
-            this.LineEdit.Controls.Add(this.NameBox);
-            this.LineEdit.Controls.Add(this.NameLabelLine);
-            this.LineEdit.Location = new System.Drawing.Point(6, 38);
-            this.LineEdit.Name = "LineEdit";
-            this.LineEdit.Size = new System.Drawing.Size(519, 264);
-            this.LineEdit.TabIndex = 1;
-            // 
-            // ColorBox
-            // 
-            this.ColorBox.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ColorBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ColorBox.Location = new System.Drawing.Point(61, 32);
-            this.ColorBox.Name = "ColorBox";
-            this.ColorBox.Size = new System.Drawing.Size(100, 19);
-            this.ColorBox.TabIndex = 4;
-            // 
-            // ColorLabelLine
-            // 
-            this.ColorLabelLine.AutoSize = true;
-            this.ColorLabelLine.Location = new System.Drawing.Point(7, 32);
-            this.ColorLabelLine.Name = "ColorLabelLine";
-            this.ColorLabelLine.Size = new System.Drawing.Size(48, 18);
-            this.ColorLabelLine.TabIndex = 2;
-            this.ColorLabelLine.Text = "Цвет:";
-            this.ColorLabelLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // NameBox
-            // 
-            this.NameBox.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.NameBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.NameBox.Location = new System.Drawing.Point(91, 7);
-            this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(100, 19);
-            this.NameBox.TabIndex = 1;
-            // 
-            // NameLabelLine
-            // 
-            this.NameLabelLine.AutoSize = true;
-            this.NameLabelLine.Location = new System.Drawing.Point(7, 7);
-            this.NameLabelLine.Name = "NameLabelLine";
-            this.NameLabelLine.Size = new System.Drawing.Size(82, 18);
-            this.NameLabelLine.TabIndex = 0;
-            this.NameLabelLine.Text = "Название:";
-            this.NameLabelLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // PagePoints
-            // 
-            this.PagePoints.Location = new System.Drawing.Point(4, 27);
-            this.PagePoints.Name = "PagePoints";
-            this.PagePoints.Padding = new System.Windows.Forms.Padding(3);
-            this.PagePoints.Size = new System.Drawing.Size(531, 308);
-            this.PagePoints.TabIndex = 1;
-            this.PagePoints.Text = "Точки";
-            this.PagePoints.UseVisualStyleBackColor = true;
             // 
             // PageChart
             // 
@@ -363,7 +273,6 @@
             this.chart.Size = new System.Drawing.Size(538, 338);
             this.chart.TabIndex = 5;
             this.chart.TextAntiAliasingQuality = System.Windows.Forms.DataVisualization.Charting.TextAntiAliasingQuality.SystemDefault;
-            this.chart.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Chart_MouseClick);
             // 
             // TabControl
             // 
@@ -379,7 +288,128 @@
             this.TabControl.SelectedIndex = 0;
             this.TabControl.Size = new System.Drawing.Size(560, 383);
             this.TabControl.TabIndex = 5;
-            this.TabControl.SelectedIndexChanged += new System.EventHandler(this.TabControl_SelectedIndexChanged);
+            // 
+            // PointSel
+            // 
+            this.PointSel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.PointSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.PointSel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.PointSel.FormattingEnabled = true;
+            this.PointSel.Location = new System.Drawing.Point(353, 6);
+            this.PointSel.Name = "PointSel";
+            this.PointSel.Size = new System.Drawing.Size(121, 26);
+            this.PointSel.TabIndex = 7;
+            // 
+            // LineSel
+            // 
+            this.LineSel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.LineSel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LineSel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LineSel.FormattingEnabled = true;
+            this.LineSel.Location = new System.Drawing.Point(78, 6);
+            this.LineSel.Name = "LineSel";
+            this.LineSel.Size = new System.Drawing.Size(121, 26);
+            this.LineSel.TabIndex = 6;
+            // 
+            // PointEdit
+            // 
+            this.PointEdit.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.PointEdit.Controls.Add(this.ColorPointBox);
+            this.PointEdit.Controls.Add(this.ColorPoint);
+            this.PointEdit.Controls.Add(this.NamePointBox);
+            this.PointEdit.Controls.Add(this.NamePoint);
+            this.PointEdit.Location = new System.Drawing.Point(280, 38);
+            this.PointEdit.Name = "PointEdit";
+            this.PointEdit.Size = new System.Drawing.Size(268, 308);
+            this.PointEdit.TabIndex = 9;
+            // 
+            // ColorPointBox
+            // 
+            this.ColorPointBox.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.ColorPointBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ColorPointBox.Location = new System.Drawing.Point(61, 32);
+            this.ColorPointBox.Name = "ColorPointBox";
+            this.ColorPointBox.Size = new System.Drawing.Size(100, 19);
+            this.ColorPointBox.TabIndex = 4;
+            // 
+            // ColorPoint
+            // 
+            this.ColorPoint.AutoSize = true;
+            this.ColorPoint.Location = new System.Drawing.Point(7, 32);
+            this.ColorPoint.Name = "ColorPoint";
+            this.ColorPoint.Size = new System.Drawing.Size(48, 18);
+            this.ColorPoint.TabIndex = 2;
+            this.ColorPoint.Text = "Цвет:";
+            this.ColorPoint.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // NamePointBox
+            // 
+            this.NamePointBox.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.NamePointBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.NamePointBox.Location = new System.Drawing.Point(91, 7);
+            this.NamePointBox.Name = "NamePointBox";
+            this.NamePointBox.Size = new System.Drawing.Size(100, 19);
+            this.NamePointBox.TabIndex = 1;
+            // 
+            // NamePoint
+            // 
+            this.NamePoint.AutoSize = true;
+            this.NamePoint.Location = new System.Drawing.Point(7, 7);
+            this.NamePoint.Name = "NamePoint";
+            this.NamePoint.Size = new System.Drawing.Size(82, 18);
+            this.NamePoint.TabIndex = 0;
+            this.NamePoint.Text = "Название:";
+            this.NamePoint.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LineEdit
+            // 
+            this.LineEdit.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.LineEdit.Controls.Add(this.ColorLineBox);
+            this.LineEdit.Controls.Add(this.ColorLine);
+            this.LineEdit.Controls.Add(this.NameLineBox);
+            this.LineEdit.Controls.Add(this.NameLine);
+            this.LineEdit.Location = new System.Drawing.Point(6, 38);
+            this.LineEdit.Name = "LineEdit";
+            this.LineEdit.Size = new System.Drawing.Size(268, 308);
+            this.LineEdit.TabIndex = 8;
+            // 
+            // ColorLineBox
+            // 
+            this.ColorLineBox.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.ColorLineBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.ColorLineBox.Location = new System.Drawing.Point(61, 32);
+            this.ColorLineBox.Name = "ColorLineBox";
+            this.ColorLineBox.Size = new System.Drawing.Size(100, 19);
+            this.ColorLineBox.TabIndex = 4;
+            // 
+            // ColorLine
+            // 
+            this.ColorLine.AutoSize = true;
+            this.ColorLine.Location = new System.Drawing.Point(7, 32);
+            this.ColorLine.Name = "ColorLine";
+            this.ColorLine.Size = new System.Drawing.Size(48, 18);
+            this.ColorLine.TabIndex = 2;
+            this.ColorLine.Text = "Цвет:";
+            this.ColorLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // NameLineBox
+            // 
+            this.NameLineBox.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.NameLineBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.NameLineBox.Location = new System.Drawing.Point(91, 7);
+            this.NameLineBox.Name = "NameLineBox";
+            this.NameLineBox.Size = new System.Drawing.Size(100, 19);
+            this.NameLineBox.TabIndex = 1;
+            // 
+            // NameLine
+            // 
+            this.NameLine.AutoSize = true;
+            this.NameLine.Location = new System.Drawing.Point(7, 7);
+            this.NameLine.Name = "NameLine";
+            this.NameLine.Size = new System.Drawing.Size(82, 18);
+            this.NameLine.TabIndex = 0;
+            this.NameLine.Text = "Название:";
+            this.NameLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Form1
             // 
@@ -406,13 +436,13 @@
             this.menuStrip1.PerformLayout();
             this.PageOuput.ResumeLayout(false);
             this.PageEdit.ResumeLayout(false);
-            this.EditControl.ResumeLayout(false);
-            this.PageLines.ResumeLayout(false);
-            this.LineEdit.ResumeLayout(false);
-            this.LineEdit.PerformLayout();
             this.PageChart.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.TabControl.ResumeLayout(false);
+            this.PointEdit.ResumeLayout(false);
+            this.PointEdit.PerformLayout();
+            this.LineEdit.ResumeLayout(false);
+            this.LineEdit.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -420,7 +450,6 @@
 
         #endregion
         private System.Windows.Forms.RichTextBox xInput;
-        private System.Windows.Forms.Button Build;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox yInput;
@@ -440,15 +469,19 @@
         private System.Windows.Forms.TabPage PageChart;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart;
         private System.Windows.Forms.TabControl TabControl;
-        private System.Windows.Forms.TabControl EditControl;
-        private System.Windows.Forms.TabPage PageLines;
-        private System.Windows.Forms.TabPage PagePoints;
+        public System.Windows.Forms.Button Build;
+        private System.Windows.Forms.Panel PointEdit;
+        private System.Windows.Forms.TextBox ColorPointBox;
+        private System.Windows.Forms.Label ColorPoint;
+        private System.Windows.Forms.TextBox NamePointBox;
+        private System.Windows.Forms.Label NamePoint;
         private System.Windows.Forms.Panel LineEdit;
+        private System.Windows.Forms.TextBox ColorLineBox;
+        private System.Windows.Forms.Label ColorLine;
+        private System.Windows.Forms.TextBox NameLineBox;
+        private System.Windows.Forms.Label NameLine;
+        private System.Windows.Forms.ComboBox PointSel;
         private System.Windows.Forms.ComboBox LineSel;
-        private System.Windows.Forms.Label NameLabelLine;
-        private System.Windows.Forms.TextBox NameBox;
-        private System.Windows.Forms.Label ColorLabelLine;
-        private System.Windows.Forms.TextBox ColorBox;
     }
 }
 
