@@ -11,13 +11,14 @@ namespace EasyGraph
     public static class Logic
     {
         private static readonly Random random = new Random();
+        private static List<double> x = new List<double>();
+        private static List<string> y = new List<string>();
         public static bool IsContinue { get; private set; } = true;
         public static List<List<DataPoint>> Points { get; set; } = new List<List<DataPoint>>();
 
         public static void Build_Chart(Form1 form1)
         {
-            List<double> x;
-            List<string> y;
+            
             Config.nameLines.Clear();
             form1.TabControl.SelectedTab = form1.PageChart;
 
@@ -26,6 +27,29 @@ namespace EasyGraph
 
             if (IsContinue)
                 form1.chart.PlotLine(x, y, nameLines: Config.nameLines);
+        }
+
+        public static void Save_Chart(Form1 form1)
+        {
+            form1.Save.Filter = "*.bmp|*.bmp;|*.png|*.png;|*.jpg|*.jpg";
+            form1.Save.FileName = "Chart";
+            if (form1.Save.ShowDialog() == DialogResult.Cancel)
+                return;
+
+            switch (form1.Save.FilterIndex)
+            {
+                case 1: form1.chart.SaveImage(form1.Save.FileName, ChartImageFormat.Bmp); break;
+                case 2: form1.chart.SaveImage(form1.Save.FileName, ChartImageFormat.Png); break;
+                case 3: form1.chart.SaveImage(form1.Save.FileName, ChartImageFormat.Jpeg); break;
+            }
+        }
+
+        public static void Show_Values(Form1 form1)
+        {
+            if (x.Count == 0 || y.Count == 0) return;
+            form1.TabControl.SelectedTab = form1.PageOuput;
+            form1.output.Text = $"x = [{string.Join(" ", x)}]\n" +
+                $"y = [{string.Join("][", y)}]";
         }
 
         #region Extensions for the chart
@@ -324,5 +348,6 @@ namespace EasyGraph
         }
 
         #endregion
+
     }
 }

@@ -449,10 +449,8 @@
         }
 
         #endregion
-        private System.Windows.Forms.MenuStrip menuStrip1;
         public System.Windows.Forms.ToolStripMenuItem LanguageRussian;
         public System.Windows.Forms.ToolStripMenuItem LanguageEnglish;
-        private System.Windows.Forms.SaveFileDialog Save;
         public System.Windows.Forms.Button Build;
         public System.Windows.Forms.TabControl TabControl;
         public System.Windows.Forms.TabPage PageChart;
@@ -482,6 +480,8 @@
         public System.Windows.Forms.Label NameLine;
         public System.Windows.Forms.ComboBox PointSel;
         public System.Windows.Forms.ComboBox LineSel;
+        public System.Windows.Forms.MenuStrip menuStrip1;
+        public System.Windows.Forms.SaveFileDialog Save;
     }
 }
 
