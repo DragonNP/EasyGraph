@@ -1,12 +1,10 @@
-﻿using System;
+﻿using EasyGraph.Logic;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using static EasyGraph.Languages;
-using static EasyGraph.Logic;
-using static EasyGraph.Utilities;
-
+using static EasyGraph.Logic.MainLogic;
 namespace EasyGraph
 {
     public partial class Form1 : Form
@@ -20,90 +18,66 @@ namespace EasyGraph
             chart.Initialize(title: Config.LanguageLocale[5], legendsTitle: Config.LanguageLocale[6], font: Config.font);
 
             #region Events
-            SaveAs.Click += (s, e) => Save_Chart(this);
+            SaveAs.Click += async (s, e) => await Task.Run(() =>
+                Save_Chart(this));
 
-            showValues.Click += (s, e) => Show_Values(this);
+            Build.Click += async (s, e) => await Task.Run(() =>
+                Build_Chart(this));
 
-            Build.Click += (s, e) => Build_Chart(this);
+            chart.MouseClick += async (s, e) => await Task.Run(() =>
+                chart.AddPoints(e));
 
-            chart.MouseClick += (s, e) => chart.AddPoints(e);
+            LanguageRussian.Click += async (s, e) => await Task.Run(() =>
+                SetLanguage("Russian", Config.PathRegistry));
 
-            LanguageRussian.Click += (s, e) => SetLanguage("Russian", Config.PathRegistry);
+            LanguageEnglish.Click += async (s, e) => await Task.Run(() =>
+                SetLanguage("English", Config.PathRegistry));
 
-            LanguageEnglish.Click += (s, e) => SetLanguage("English", Config.PathRegistry);
+            Donation.Click += async (s, e) => await Task.Run(() =>
+                System.Diagnostics.Process.Start("https://money.yandex.ru/to/410016387696692"));
 
-            Donation.Click += (s, e) =>
-                System.Diagnostics.Process.Start("https://money.yandex.ru/to/410016387696692");
+            TabControl.SelectedIndexChanged += async (s, e) => await Task.Run(() =>
+                TabControl_SelectedIndexChanged(this));
 
-            TabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
-
-            LineSel.DropDownClosed += LineSel_DropDownClosed;
+            LineSel.DropDownClosed += async (s, e) => await Task.Run(() => 
+                LineSel_DropDownClosed(this));
             #endregion
 
             #region KeyDown
-            NameLineBox.KeyDown += (s, a) =>
+            NameLineBox.KeyDown += async (s, a) => await Task.Run(() =>
             {
                 if (a.KeyCode == Keys.Enter)
                 {
                     chart.Series[LineSel.SelectedIndex].Name = NameLineBox.Text;
                     Config.nameLines[LineSel.SelectedIndex] = NameLineBox.Text;
                     int i = LineSel.SelectedIndex;
-                    TabControl_SelectedIndexChanged(TabControl, null);
-                    LineSel_DropDownClosed(LineSel, null);
+                    TabControl_SelectedIndexChanged(this);
+                    LineSel_DropDownClosed(this);
                     LineSel.SelectedIndex = i;
                 }
-            };
+            });
 
-            ColorLineBox.KeyDown += (s, a) =>
+            ColorLineBox.KeyDown += async (s, a) => await Task.Run(() =>
             {
                 if (a.KeyCode == Keys.Enter)
                 {
                     chart.Series[LineSel.SelectedIndex].Color = Utilities.StringToColor(ColorLineBox.Text);
                     Config.LineColor[LineSel.SelectedIndex] = chart.Series[LineSel.SelectedIndex].Color;
                     int i = LineSel.SelectedIndex;
-                    TabControl_SelectedIndexChanged(TabControl, null);
-                    LineSel_DropDownClosed(LineSel, null);
+                    TabControl_SelectedIndexChanged(this);
+                    LineSel_DropDownClosed(this);
                     LineSel.SelectedIndex = i;
                 }
-            };
+            });
 
-            KeyDown += (s, e) =>
+            KeyDown += async (s, e) => await Task.Run(() =>
             {
                 if (e.KeyCode == Keys.Enter && xInput.Focused)
                     yInput.Focus();
                 else if (e.KeyCode == Keys.Enter && yInput.Focused)
                     Build_Chart(this);
-            };
+            });
             #endregion
         }
-
-        #region Events Methods
-        void LineSel_DropDownClosed(object sender, EventArgs e)
-        {
-            if (Config.nameLines.Count == 0) return;
-
-            NameLineBox.Text = LineSel.SelectedItem.ToString();
-            ColorLineBox.Text = ColorArrayToStringArray()[LineSel.SelectedIndex];
-            LineSel.Update();
-        }
-
-        async void TabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            await Task.Run(() =>
-            {
-                if (TabControl.SelectedIndex == 1 && Config.nameLines.Count != 0 && Points.Count != 0)
-                {
-                    PointSel.Items.Clear();
-                    foreach (List<DataPoint> pointsList in Points)
-                        PointSel.Items.AddRange(pointsList.ToArray());
-
-                    LineSel.Items.Clear();
-                    LineSel.Items.AddRange(Config.nameLines.ToArray());
-                    LineSel.SelectedIndex = 0;
-                    LineSel_DropDownClosed(LineSel, e);
-                }
-            });
-        }
-        #endregion
     }
 }

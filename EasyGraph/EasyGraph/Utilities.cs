@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace EasyGraph
 {
     class Utilities
     {
-        public static string[] ColorArrayToStringArray()
+        public static string ColorToString(Color color)
         {
-            List<string> stringColor = new List<string>();
-            foreach (Color color in Config.LineColor)
-                stringColor.Add($"{color.R}, {color.G}, {color.B}");
-
-            return stringColor.ToArray();
+            return $"{color.R}, {color.G}, {color.B}";
         }
 
         public static Color StringToColor(string str)
