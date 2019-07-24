@@ -93,7 +93,7 @@
             this.Build.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Build.Font = new System.Drawing.Font("Arial", 12F);
             this.Build.ForeColor = System.Drawing.Color.Black;
-            this.Build.Location = new System.Drawing.Point(126, 85);
+            this.Build.Location = new System.Drawing.Point(13, 85);
             this.Build.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
             this.Build.Name = "Build";
             this.Build.Size = new System.Drawing.Size(95, 28);
@@ -191,7 +191,7 @@
             this.LanguageEnglish,
             this.LanguageRussian});
             this.Language.Name = "Language";
-            this.Language.Size = new System.Drawing.Size(180, 22);
+            this.Language.Size = new System.Drawing.Size(100, 22);
             this.Language.Text = "Язык";
             // 
             // LanguageEnglish
@@ -404,7 +404,7 @@
             this.TabControl.Controls.Add(this.PageChart);
             this.TabControl.Controls.Add(this.PageEdit);
             this.TabControl.Controls.Add(this.PageOuput);
-            this.TabControl.Location = new System.Drawing.Point(12, 119);
+            this.TabControl.Location = new System.Drawing.Point(13, 119);
             this.TabControl.Multiline = true;
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -459,7 +459,6 @@
         public System.Windows.Forms.DataVisualization.Charting.Chart chart;
         public System.Windows.Forms.Label label1;
         public System.Windows.Forms.Label label2;
-        public System.Windows.Forms.ToolStripMenuItem showValues;
         public System.Windows.Forms.RichTextBox output;
         public System.Windows.Forms.ToolStripMenuItem Options;
         public System.Windows.Forms.ToolStripMenuItem Language;
@@ -482,6 +481,7 @@
         public System.Windows.Forms.ComboBox LineSel;
         public System.Windows.Forms.MenuStrip menuStrip1;
         public System.Windows.Forms.SaveFileDialog Save;
+        public System.Windows.Forms.ToolStripMenuItem showValues;
     }
 }
 

@@ -78,7 +78,7 @@ namespace EasyGraph.Logic
             chart.ChartAreas[areasName].AxisY.Maximum = maxY;
         }
 
-        async public static void PlotLine(
+        public static void PlotLine(
             this Chart chart, List<double> x, List<string> y, List<string> nameLines)
         {
             double minX = -1, maxX = -1;
@@ -124,7 +124,7 @@ namespace EasyGraph.Logic
                     }
                 });
 
-            PointsAll.Clear();
+            points.Clear();
             chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY);
             chart.AddSeries(
                 nameLines: nameLines,
@@ -133,55 +133,49 @@ namespace EasyGraph.Logic
                 colors: Config.LineColor,
                 isClear: true);
 
-            await Task.Run(() =>
+            int posPoint = 0;
+            for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
             {
-                int posPoint = 0;
-                for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
-                {
-                    List<string> yList = new List<string>();
-                    yList.AddRange(y[i1].Split(new char[] { ',' }));
-                    PointsAll.Add(new List<DataPoint>());
+                List<string> yList = new List<string>();
+                yList.AddRange(y[i1].Split(new char[] { ',' }));
 
-                    for (int i2 = 0;
-                        i2 < (x.Count > yList.Count ? yList.Count : x.Count);
-                        i2++, posPoint++)
-                    {
-                        PointsAll[i1].Add(new DataPoint(x[posPoint],
-                                  double.Parse(yList[i2], System.Globalization.CultureInfo.InvariantCulture)));
-                        chart.Series[nameLines[i1]].Points.Add(PointsAll[i1][i2]);
-                        chart.Update();
-                    }
-                    chart.Series[nameLines[i1]].ToolTip = "X = #VALX, Y = #VALY";
+                int index = 0;
+                for (int i2 = 0;
+                    i2 < (x.Count > yList.Count ? yList.Count : x.Count);
+                    i2++, posPoint++)
+                {
+                    points.Add(new Points(i1, new DataPoint(x[posPoint],
+                              double.Parse(yList[i2], System.Globalization.CultureInfo.InvariantCulture)), index));
+                    chart.Series[nameLines[i1]].Points.Add(points[posPoint].Point);
+                    chart.Update();
+                    index++;
                 }
-            });
+                chart.Series[nameLines[i1]].ToolTip = "X = #VALX, Y = #VALY";
+            }
         }
 
-        async public static void AddPoints(this Chart chart, MouseEventArgs e)
+        public static void AddPoints(this Chart chart, MouseEventArgs e)
         {
-            await Task.Run(() =>
-            {
-                HitTestResult res = chart.HitTest(e.X, e.Y);
-                if (res.Series == null) return;
-                for (int i1 = 0; i1 < Config.nameLines.Count; i1++)
-                {
-                    PointsName.Add(new List<string>());
-                    for (int i = 0; i < PointsAll[i1].Count; i++)
-                    {
-                        if (PointsAll[i1][i].XValue == res.Series.Points[res.PointIndex].XValue &&
-                            PointsAll[i1][i].YValues[0] == res.Series.Points[res.PointIndex].YValues[0])
-                        {
-                            chart.Series[Config.nameLines[i1]].Points[i].Label = "X=" + PointsAll[i1][i].XValue + " Y=" + PointsAll[i1][i].YValues[0];
-                            chart.Series[Config.nameLines[i1]].Points[i].LabelBackColor = chart.BackColor;
+            HitTestResult res = chart.HitTest(e.X, e.Y);
+            if (res.Series == null) return;
 
-                            chart.Series[Config.nameLines[i1]].Points[i].MarkerColor = Color.Red;
-                            chart.Series[Config.nameLines[i1]].Points[i].MarkerStyle = MarkerStyle.Circle;
-                            chart.Series[Config.nameLines[i1]].Points[i].MarkerSize = 6;
-                            chart.Update();
-                            PointsName[i1].Add(chart.Series[Config.nameLines[i1]].Points[i].Label);
-                        }
-                    }
+            for(int i = 0; i < points.Count; i++)
+            {
+                if (points[i].Point.XValue == res.Series.Points[res.PointIndex].XValue &&
+                    points[i].Point.YValues[0] == res.Series.Points[res.PointIndex].YValues[0])
+                {
+                    chart.Series[points[i].IndexLine].Points[points[i].Index].Label = "X=" + points[i].Point.XValue + " Y=" + points[i].Point.YValues[0];
+                    chart.Series[points[i].IndexLine].Points[points[i].Index].LabelBackColor = chart.BackColor;
+
+                    chart.Series[points[i].IndexLine].Points[points[i].Index].MarkerColor = Color.Red;
+                    chart.Series[points[i].IndexLine].Points[points[i].Index].MarkerStyle = MarkerStyle.Circle;
+                    chart.Series[points[i].IndexLine].Points[points[i].Index].MarkerSize = 6;
+                    chart.Update();
+
+                    points[i].Point = chart.Series[points[i].IndexLine].Points[points[i].Index];
+                    points[i].Visible = true;
                 }
-            });
+            }
         }
     }
 }

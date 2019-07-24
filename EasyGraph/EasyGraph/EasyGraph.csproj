@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Languages.cs" />
     <Compile Include="Logic\MainLogic.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />

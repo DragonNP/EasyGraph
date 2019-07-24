@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static EasyGraph.CheckingXY;
@@ -8,17 +6,16 @@ using static EasyGraph.Utilities;
 
 namespace EasyGraph.Logic
 {
-    public static class MainLogic
+    public class MainLogic
     {
-        public static bool IsContinue { get; set; } = true;
-        public static List<List<DataPoint>> PointsAll = new List<List<DataPoint>>();
-        public static List<List<string>> PointsName = new List<List<string>>();
+        public static bool IsContinue = true;
+        public static List<Points> points = new List<Points>();
         private static List<double> x = new List<double>();
         private static List<string> y = new List<string>();
 
         public static void Build_Chart(Form1 form1)
         {
-            
+
             Config.nameLines.Clear();
             form1.TabControl.SelectedTab = form1.PageChart;
 
@@ -52,16 +49,7 @@ namespace EasyGraph.Logic
                 $"y = [{string.Join("][", y)}]";
         }
 
-        public static void LineSel_DropDownClosed(Form1 form1)
-        {
-            if (Config.nameLines.Count == 0) return;
-
-            form1.NameLineBox.Text = form1.LineSel.SelectedItem.ToString();
-            form1.ColorLineBox.Text = ColorToString(Config.LineColor[form1.LineSel.SelectedIndex]);
-            form1.LineSel.Update();
-        }
-
-        public static void TabControl_SelectedIndexChanged(Form1 form1)
+        public static void TabControl_Update(Form1 form1)
         {
             if (form1.TabControl.SelectedIndex == 1)
             {
@@ -73,27 +61,46 @@ namespace EasyGraph.Logic
                     LineSel_DropDownClosed(form1);
                 }
 
-                if (PointsName.Count != 0)
+                if (points.Count != 0)
                 {
                     form1.PointSel.Items.Clear();
-                    foreach (List<string> pointsList in PointsName)
-                        form1.PointSel.Items.AddRange(pointsList.ToArray());
-                    form1.PointSel.SelectedIndex = 0;
-                    PointSel_DropDownClosed(form1);
+                    foreach (Points point in points)
+                    {
+                        if (!point.Visible) continue;
+                        form1.PointSel.Items.Add(point.Point.Label);
+                    }
+                    if (form1.PointSel.Items.Count != 0)
+                    {
+                        form1.PointSel.SelectedIndex = 0;
+                        PointSel_DropDownClosed(form1);
+                    }
                 }
             }
             else if (form1.TabControl.SelectedIndex == 2)
                 Show_Values(form1);
         }
 
+        public static void LineSel_DropDownClosed(Form1 form1)
+        {
+            if (Config.nameLines.Count == 0) return;
+
+            form1.NameLineBox.Text = form1.LineSel.SelectedItem.ToString();
+            form1.ColorLineBox.Text = ColorToString(Config.LineColor[form1.LineSel.SelectedIndex]);
+            form1.LineSel.Update();
+        }
+
         public static void PointSel_DropDownClosed(Form1 form1)
         {
-            if (PointsName.Count == 0) return;
+            if (form1.PointSel.SelectedIndex == -1) return;
 
-            form1.NamePointBox.Text = form1.PointSel.SelectedItem.ToString();
-            //chart.Series[Config.nameLines[i1]].Points[i].MarkerColor;
-            //ColorPointBox.Text = ColorToString(chart.Series[Config.nameLines[]].Points[].MarkerColor);
-            form1.PointSel.Update();
+            foreach (Points point in points)
+            {
+                if (!point.Visible || point.Point.Label != form1.PointSel.SelectedItem.ToString()) continue;
+
+                form1.NamePointBox.Text = point.Point.Label;
+                form1.ColorPointBox.Text = ColorToString(point.Point.MarkerColor);
+                form1.PointSel.Update();
+            }
         }
     }
 }
