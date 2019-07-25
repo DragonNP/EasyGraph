@@ -36,7 +36,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.File = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.showValues = new System.Windows.Forms.ToolStripMenuItem();
             this.Options = new System.Windows.Forms.ToolStripMenuItem();
             this.Language = new System.Windows.Forms.ToolStripMenuItem();
             this.LanguageEnglish = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,6 +60,8 @@
             this.PageChart = new System.Windows.Forms.TabPage();
             this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.TabControl = new System.Windows.Forms.TabControl();
+            this.DoneLine = new System.Windows.Forms.Button();
+            this.DonePoint = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.PageOuput.SuspendLayout();
             this.PageEdit.SuspendLayout();
@@ -98,7 +99,7 @@
             this.Build.Name = "Build";
             this.Build.Size = new System.Drawing.Size(95, 28);
             this.Build.TabIndex = 3;
-            this.Build.Text = "Построить";
+            this.Build.Text = "Build";
             this.Build.UseVisualStyleBackColor = false;
             // 
             // label1
@@ -147,13 +148,12 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.File,
-            this.showValues,
             this.Options,
             this.Donation});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(584, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(584, 25);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -162,28 +162,22 @@
             this.File.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SaveAs});
             this.File.Name = "File";
-            this.File.Size = new System.Drawing.Size(45, 18);
-            this.File.Text = "Файл";
+            this.File.Size = new System.Drawing.Size(35, 19);
+            this.File.Text = "File";
             // 
             // SaveAs
             // 
             this.SaveAs.Name = "SaveAs";
-            this.SaveAs.Size = new System.Drawing.Size(208, 22);
-            this.SaveAs.Text = "Сохранаить график как...";
-            // 
-            // showValues
-            // 
-            this.showValues.Name = "showValues";
-            this.showValues.Size = new System.Drawing.Size(117, 18);
-            this.showValues.Text = "Показать значения";
+            this.SaveAs.Size = new System.Drawing.Size(180, 22);
+            this.SaveAs.Text = "Save chart as";
             // 
             // Options
             // 
             this.Options.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Language});
             this.Options.Name = "Options";
-            this.Options.Size = new System.Drawing.Size(51, 18);
-            this.Options.Text = "Опции";
+            this.Options.Size = new System.Drawing.Size(56, 19);
+            this.Options.Text = "Options";
             // 
             // Language
             // 
@@ -191,8 +185,8 @@
             this.LanguageEnglish,
             this.LanguageRussian});
             this.Language.Name = "Language";
-            this.Language.Size = new System.Drawing.Size(100, 22);
-            this.Language.Text = "Язык";
+            this.Language.Size = new System.Drawing.Size(180, 22);
+            this.Language.Text = "Language";
             // 
             // LanguageEnglish
             // 
@@ -209,8 +203,8 @@
             // Donation
             // 
             this.Donation.Name = "Donation";
-            this.Donation.Size = new System.Drawing.Size(100, 18);
-            this.Donation.Text = "Пожертвование";
+            this.Donation.Size = new System.Drawing.Size(62, 19);
+            this.Donation.Text = "Donation";
             // 
             // output
             // 
@@ -234,7 +228,7 @@
             this.PageOuput.Padding = new System.Windows.Forms.Padding(3);
             this.PageOuput.Size = new System.Drawing.Size(552, 352);
             this.PageOuput.TabIndex = 2;
-            this.PageOuput.Text = "Вывод";
+            this.PageOuput.Text = "Output";
             this.PageOuput.UseVisualStyleBackColor = true;
             // 
             // PageEdit
@@ -248,12 +242,13 @@
             this.PageEdit.Padding = new System.Windows.Forms.Padding(3);
             this.PageEdit.Size = new System.Drawing.Size(552, 352);
             this.PageEdit.TabIndex = 1;
-            this.PageEdit.Text = "Редактирование";
+            this.PageEdit.Text = "Edit";
             this.PageEdit.UseVisualStyleBackColor = true;
             // 
             // PointEdit
             // 
             this.PointEdit.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.PointEdit.Controls.Add(this.DonePoint);
             this.PointEdit.Controls.Add(this.ColorPointBox);
             this.PointEdit.Controls.Add(this.ColorPoint);
             this.PointEdit.Controls.Add(this.NamePointBox);
@@ -267,43 +262,44 @@
             // 
             this.ColorPointBox.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ColorPointBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ColorPointBox.Location = new System.Drawing.Point(61, 32);
+            this.ColorPointBox.Location = new System.Drawing.Point(13, 80);
             this.ColorPointBox.Name = "ColorPointBox";
-            this.ColorPointBox.Size = new System.Drawing.Size(100, 19);
+            this.ColorPointBox.Size = new System.Drawing.Size(243, 19);
             this.ColorPointBox.TabIndex = 4;
+            this.ColorPointBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ColorPoint
             // 
-            this.ColorPoint.AutoSize = true;
-            this.ColorPoint.Location = new System.Drawing.Point(7, 32);
+            this.ColorPoint.Location = new System.Drawing.Point(3, 51);
             this.ColorPoint.Name = "ColorPoint";
-            this.ColorPoint.Size = new System.Drawing.Size(48, 18);
+            this.ColorPoint.Size = new System.Drawing.Size(262, 26);
             this.ColorPoint.TabIndex = 2;
-            this.ColorPoint.Text = "Цвет:";
-            this.ColorPoint.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ColorPoint.Text = "Color:";
+            this.ColorPoint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // NamePointBox
             // 
             this.NamePointBox.BackColor = System.Drawing.SystemColors.ControlDark;
             this.NamePointBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.NamePointBox.Location = new System.Drawing.Point(91, 7);
+            this.NamePointBox.Location = new System.Drawing.Point(13, 29);
             this.NamePointBox.Name = "NamePointBox";
-            this.NamePointBox.Size = new System.Drawing.Size(100, 19);
+            this.NamePointBox.Size = new System.Drawing.Size(243, 19);
             this.NamePointBox.TabIndex = 1;
+            this.NamePointBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // NamePoint
             // 
-            this.NamePoint.AutoSize = true;
-            this.NamePoint.Location = new System.Drawing.Point(7, 7);
+            this.NamePoint.Location = new System.Drawing.Point(3, 0);
             this.NamePoint.Name = "NamePoint";
-            this.NamePoint.Size = new System.Drawing.Size(82, 18);
+            this.NamePoint.Size = new System.Drawing.Size(262, 26);
             this.NamePoint.TabIndex = 0;
-            this.NamePoint.Text = "Название:";
-            this.NamePoint.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.NamePoint.Text = "Name:";
+            this.NamePoint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // LineEdit
             // 
             this.LineEdit.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.LineEdit.Controls.Add(this.DoneLine);
             this.LineEdit.Controls.Add(this.ColorLineBox);
             this.LineEdit.Controls.Add(this.ColorLine);
             this.LineEdit.Controls.Add(this.NameLineBox);
@@ -317,39 +313,39 @@
             // 
             this.ColorLineBox.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ColorLineBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.ColorLineBox.Location = new System.Drawing.Point(61, 32);
+            this.ColorLineBox.Location = new System.Drawing.Point(13, 80);
             this.ColorLineBox.Name = "ColorLineBox";
-            this.ColorLineBox.Size = new System.Drawing.Size(100, 19);
+            this.ColorLineBox.Size = new System.Drawing.Size(243, 19);
             this.ColorLineBox.TabIndex = 4;
+            this.ColorLineBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ColorLine
             // 
-            this.ColorLine.AutoSize = true;
-            this.ColorLine.Location = new System.Drawing.Point(7, 32);
+            this.ColorLine.Location = new System.Drawing.Point(3, 51);
             this.ColorLine.Name = "ColorLine";
-            this.ColorLine.Size = new System.Drawing.Size(48, 18);
+            this.ColorLine.Size = new System.Drawing.Size(262, 26);
             this.ColorLine.TabIndex = 2;
-            this.ColorLine.Text = "Цвет:";
-            this.ColorLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ColorLine.Text = "Color:";
+            this.ColorLine.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // NameLineBox
             // 
             this.NameLineBox.BackColor = System.Drawing.SystemColors.ControlDark;
             this.NameLineBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.NameLineBox.Location = new System.Drawing.Point(91, 7);
+            this.NameLineBox.Location = new System.Drawing.Point(13, 29);
             this.NameLineBox.Name = "NameLineBox";
-            this.NameLineBox.Size = new System.Drawing.Size(100, 19);
+            this.NameLineBox.Size = new System.Drawing.Size(243, 19);
             this.NameLineBox.TabIndex = 1;
+            this.NameLineBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // NameLine
             // 
-            this.NameLine.AutoSize = true;
-            this.NameLine.Location = new System.Drawing.Point(7, 7);
+            this.NameLine.Location = new System.Drawing.Point(3, 0);
             this.NameLine.Name = "NameLine";
-            this.NameLine.Size = new System.Drawing.Size(82, 18);
+            this.NameLine.Size = new System.Drawing.Size(262, 26);
             this.NameLine.TabIndex = 0;
-            this.NameLine.Text = "Название:";
-            this.NameLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.NameLine.Text = "Name:";
+            this.NameLine.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // PointSel
             // 
@@ -381,7 +377,7 @@
             this.PageChart.Padding = new System.Windows.Forms.Padding(3);
             this.PageChart.Size = new System.Drawing.Size(552, 352);
             this.PageChart.TabIndex = 0;
-            this.PageChart.Text = "График";
+            this.PageChart.Text = "Chart";
             this.PageChart.UseVisualStyleBackColor = true;
             // 
             // chart
@@ -410,6 +406,38 @@
             this.TabControl.SelectedIndex = 0;
             this.TabControl.Size = new System.Drawing.Size(560, 383);
             this.TabControl.TabIndex = 5;
+            // 
+            // DoneLine
+            // 
+            this.DoneLine.AutoSize = true;
+            this.DoneLine.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.DoneLine.FlatAppearance.BorderSize = 0;
+            this.DoneLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DoneLine.Font = new System.Drawing.Font("Arial", 12F);
+            this.DoneLine.ForeColor = System.Drawing.Color.Black;
+            this.DoneLine.Location = new System.Drawing.Point(87, 273);
+            this.DoneLine.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
+            this.DoneLine.Name = "DoneLine";
+            this.DoneLine.Size = new System.Drawing.Size(95, 28);
+            this.DoneLine.TabIndex = 5;
+            this.DoneLine.Text = "Done";
+            this.DoneLine.UseVisualStyleBackColor = false;
+            // 
+            // DonePoint
+            // 
+            this.DonePoint.AutoSize = true;
+            this.DonePoint.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.DonePoint.FlatAppearance.BorderSize = 0;
+            this.DonePoint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DonePoint.Font = new System.Drawing.Font("Arial", 12F);
+            this.DonePoint.ForeColor = System.Drawing.Color.Black;
+            this.DonePoint.Location = new System.Drawing.Point(87, 273);
+            this.DonePoint.Margin = new System.Windows.Forms.Padding(6, 3, 6, 3);
+            this.DonePoint.Name = "DonePoint";
+            this.DonePoint.Size = new System.Drawing.Size(95, 28);
+            this.DonePoint.TabIndex = 6;
+            this.DonePoint.Text = "Done";
+            this.DonePoint.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
@@ -481,7 +509,8 @@
         public System.Windows.Forms.ComboBox LineSel;
         public System.Windows.Forms.MenuStrip menuStrip1;
         public System.Windows.Forms.SaveFileDialog Save;
-        public System.Windows.Forms.ToolStripMenuItem showValues;
+        public System.Windows.Forms.Button DonePoint;
+        public System.Windows.Forms.Button DoneLine;
     }
 }
 

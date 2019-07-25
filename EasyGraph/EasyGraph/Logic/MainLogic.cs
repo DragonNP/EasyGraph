@@ -15,7 +15,6 @@ namespace EasyGraph.Logic
 
         public static void Build_Chart(Form1 form1)
         {
-
             Config.nameLines.Clear();
             form1.TabControl.SelectedTab = form1.PageChart;
 
@@ -46,7 +45,7 @@ namespace EasyGraph.Logic
             if (x.Count == 0 || y.Count == 0) return;
             form1.TabControl.SelectedTab = form1.PageOuput;
             form1.output.Text = $"x = [{string.Join(" ", x)}]\n" +
-                $"y = [{string.Join("][", y)}]";
+                $"y = [{string.Join("][", y).Replace(",", " ")}]";
         }
 
         public static void TabControl_Update(Form1 form1)
@@ -100,6 +99,36 @@ namespace EasyGraph.Logic
                 form1.NamePointBox.Text = point.Point.Label;
                 form1.ColorPointBox.Text = ColorToString(point.Point.MarkerColor);
                 form1.PointSel.Update();
+            }
+        }
+
+        public static void Set_Line(Form1 form1)
+        {
+            form1.chart.Series[form1.LineSel.SelectedIndex].Name = form1.NameLineBox.Text;
+            Config.nameLines[form1.LineSel.SelectedIndex] = form1.NameLineBox.Text;
+
+            form1.chart.Series[form1.LineSel.SelectedIndex].Color = StringToColor(form1.ColorLineBox.Text);
+            Config.LineColor[form1.LineSel.SelectedIndex] = form1.chart.Series[form1.LineSel.SelectedIndex].Color;
+            form1.TabControl.SelectedIndex = 0;
+        }
+
+        public static void Set_Point(Form1 form1)
+        {
+            for (int i = 0; i < points.Count; i++)
+            {
+                if (!points[i].Visible || points[i].Point.Label != form1.PointSel.SelectedItem.ToString()) continue;
+                points[i].Point.Label = form1.NamePointBox.Text;
+                form1.chart.Series[points[i].IndexLine].Points[points[i].Index] = points[i].Point;
+                break;
+            }
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                if (!points[i].Visible || points[i].Point.Label != form1.PointSel.SelectedItem.ToString()) continue;
+                points[i].Point.MarkerColor = StringToColor(form1.ColorPointBox.Text);
+                form1.chart.Series[points[i].IndexLine].Points[points[i].Index] = points[i].Point;
+                form1.TabControl.SelectedIndex = 0;
+                break;
             }
         }
     }

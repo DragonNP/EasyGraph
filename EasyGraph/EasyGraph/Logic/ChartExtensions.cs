@@ -44,7 +44,7 @@ namespace EasyGraph.Logic
             chart.ChartAreas[areasName].AxisY2.TitleForeColor = color;
         }
 
-        public static void AddSeries(
+        private static void AddSeries(
             this Chart chart, List<string> nameLines, List<Color> colors, int borderWidth = 5, bool isClear = false,
             Font font = default, ChartDashStyle chartDashStyle = ChartDashStyle.Solid,
             SeriesChartType chartType = SeriesChartType.Line)
@@ -67,7 +67,7 @@ namespace EasyGraph.Logic
             }
         }
 
-        public static void AxisXY_Min_Max(this Chart chart, string areasName,
+        private static void AxisXY_Min_Max(this Chart chart, string areasName,
             double minX, double maxX, double minY, double maxY)
         {
 
@@ -125,7 +125,12 @@ namespace EasyGraph.Logic
                 });
 
             points.Clear();
-            chart.AxisXY_Min_Max("area", minX, maxX, minY, maxY);
+            chart.AxisXY_Min_Max(
+                areasName: "area",
+                minX: minX,
+                maxX: maxX,
+                minY: minY,
+                maxY: maxY);
             chart.AddSeries(
                 nameLines: nameLines,
                 borderWidth: 3,

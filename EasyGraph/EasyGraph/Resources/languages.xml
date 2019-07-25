@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <languages>
 	<language lang="English">
-		<show_values>Show values</show_values>
 		<options>Options</options>
 		<languageMenuStrip>Language</languageMenuStrip>
 		<donation>Donation</donation>
@@ -16,11 +15,12 @@
 		<page_output>Output</page_output>
 		<name_label_line>Name:</name_label_line>
 		<color_label_line>Color:</color_label_line>
-    <name_label_point>Name:</name_label_point>
-    <color_label_point>Color:</color_label_point>
+		<name_label_point>Name:</name_label_point>
+		<color_label_point>Color:</color_label_point>
+		<done_line>Done</done_line>
+		<done_point>Done</done_point>
 	</language>
 	<language lang="Russian">
-		<show_values>Показать значения</show_values>
 		<options>Опции</options>
 		<languageMenuStrip>Язык</languageMenuStrip>
 		<donation>Пожертвование</donation>
@@ -35,7 +35,9 @@
 		<page_output>Вывод</page_output>
 		<name_label_line>Название:</name_label_line>
 		<color_label_line>Цвет:</color_label_line>
-    <name_label_point>Название:</name_label_point>
-    <color_label_point>Цвет:</color_label_point>
+		<name_label_point>Название:</name_label_point>
+		<color_label_point>Цвет:</color_label_point>
+		<done_line>Готово</done_line>
+		<done_point>Готово</done_point>
 	</language>
 </languages>

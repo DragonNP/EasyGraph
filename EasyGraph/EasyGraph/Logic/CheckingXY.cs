@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static EasyGraph.Logic.MainLogic;
 
@@ -62,64 +61,42 @@ namespace EasyGraph
 
             if (inputText.Contains(":"))
                 inputList = Parser(inputText);
-
             else if (inputText.Contains("random"))
                 inputList = Random(inputText, random);
-
-            else if (inputText.Contains("[") && inputText.Contains("]"))
-            {
-                int count = 0;
-                foreach (Match m in Regex.Matches(inputText, "]"))
-                    count++;
-                if (count >= 2) return inputList;
-
-                inputText = inputText.Replace(" ", "");
-                inputText = inputText.Replace("[", "");
-                inputText = inputText.Replace("]", "");
-
-                foreach (string i in inputText.Split(new char[] { '\n', ',' }))
-                    inputList.Add(double.Parse(i, System.Globalization.CultureInfo.InvariantCulture));
-            }
             return inputList;
         }
 
         public static List<double> CheckingXinput(string xInputText)
         {
             List<double> xList = CheckingInputText(xInputText);
-            if (xList.Count == 0)
+            if (xList.Count != 0) return xList;
+            if (xInputText.Contains("[") && xInputText.Contains("]"))
             {
-                if (xInputText.Contains("[") && xInputText.Contains("]"))
-                {
-                    xInputText = xInputText.Replace(" ", "");
-                    xInputText = xInputText.Replace("[", "");
-                    xInputText = xInputText.Replace("]", "");
+                xInputText = xInputText.Replace(" ", "");
+                xInputText = xInputText.Replace("[", "");
+                xInputText = xInputText.Replace("]", "");
 
-                    foreach (string i in xInputText.Split(new char[] { '\n', ',' }))
-                        xList.Add(double.Parse(i, System.Globalization.CultureInfo.InvariantCulture));
+                foreach (string i in xInputText.Split(new char[] { '\n', ',' }))
+                    xList.Add(double.Parse(i, System.Globalization.CultureInfo.InvariantCulture));
 
-                }
-                return xList;
             }
-            else
-                return xList;
+            return xList;
         }
 
         public static List<string> CheckingYinput(string yInputText)
         {
             List<string> yList = new List<string>();
             List<double> chekingList = CheckingInputText(yInputText);
-            if (chekingList.Count != 0)
-                yList.Add(string.Join(" ", chekingList));
+            if (chekingList.Count != 0)  yList.Add(string.Join(",", chekingList));
             else if (yInputText.Contains("[") && yInputText.Contains("]"))
             {
                 int lineNumber = 0;
                 yInputText = yInputText.Replace(" ", "");
-                yInputText = yInputText.Replace("[", "");
-
-                foreach (string value in yInputText.Split(']'))
+                yInputText = yInputText.Replace("]", "");
+                foreach (string value in yInputText.Split('['))
                 {
                     if (value == "") continue;
-                    Config.nameLines.Add(Config.LanguageLocale[7] + $" {lineNumber}");
+                    Config.nameLines.Add(Config.LanguageLocale[6] + $" {lineNumber}");
                     yList.Add(value);
                     lineNumber++;
                 }
